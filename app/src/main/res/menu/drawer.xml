@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <group android:id="@+id/grupo_funcionamiento">
+                <item android:title="@string/funcionamiento_bloqueo"
+                    android:id="@+id/al_apagar_pantalla"
+                    android:checkable="true"/>
+                <item android:title="@string/funcionamiento_pantalla"
+                    android:id="@+id/pantalla_activa"
+                    android:checkable="true"/>
+            </group>
+    <item android:title="@string/opciones_silbidos">
+        <menu>
+            <group android:id="@+id/grupo_silbido">
+                <item android:id="@+id/sbCorto" android:title="@string/Silbido_corto" android:checkable="true"/>
+                <item android:id="@+id/sbMedio" android:title="@string/Silbido_medio" android:checkable="true"/>
+                <item android:id="@+id/sbLargo" android:title="@string/Silbido_largo" android:checkable="true"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="@string/opciones_aplausos">
+        <menu>
+            <group android:id="@+id/grupo_aplauso">
+                <item  android:id="@+id/apUno" android:title="@string/Un_aplauso" android:checkable="true"/>
+                <item android:id="@+id/apDos" android:title="@string/Dos_aplausos" android:checkable="true"/>
+                <item android:id="@+id/apTres" android:title="@string/Tres_aplausos" android:checkable="true"/>
+            </group>
+        </menu>
+    </item>
+    <group android:id="@+id/grupo_share">
+        <item android:title="@string/prueba_gratuita" android:id="@+id/quitar_publicidad_dia"/>
+    </group>
+    <group android:id="@+id/grupo_purchase">
+        <item android:title="@string/quitar_toda_publicidad" android:id="@+id/quitar_toda_publicidad"/>
+    </group>
+
+
+</menu>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "627276761242",
+    "firebase_url": "https://vercrashes01.firebaseio.com",
+    "project_id": "vercrashes01",
+    "storage_bucket": "vercrashes01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627276761242:android:d1adbfec21deea32c5f723",
+        "android_client_info": {
+          "package_name": "com.frommetoyou.soundforme.free"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "627276761242-s3vav41krg40nomo60pih4tmi245450i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.frommetoyou.soundforme.free",
+            "certificate_hash": "cd05ba32f2c1f1bc6d56a8ac7508470c09a442b6"
+          }
+        },
+        {
+          "client_id": "627276761242-4bra7ck8vnn3tk1f0fktbibtg267g5nu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoouVZFj4_bFSPPfleCfAxeE2_DccIy1k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "627276761242-4bra7ck8vnn3tk1f0fktbibtg267g5nu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

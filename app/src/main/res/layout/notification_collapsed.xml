@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="#fff"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/notif_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="13dp"
+
+        android:textSize="11sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
+        android:id="@+id/relativeSegundo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_salir"
+            android:layout_width="34dp"
+            android:layout_height="30dp"
+            android:background="@drawable/salir_app" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_salir"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tv_salir"
+            android:textColor="#000"
+            android:textSize="12sp" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relativePrimero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_toStartOf="@+id/relativeSegundo"
+        android:layout_toLeftOf="@+id/relativeSegundo">
+
+        <Button
+            android:id="@+id/btn_parar_musica"
+            android:layout_width="31dp"
+            android:layout_height="27dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/parar_musica" />
+
+        <TextView
+            android:layout_below="@+id/btn_parar_musica"
+            android:id="@+id/tv_parar_musica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="#000"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/notif_cuerpo"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notif_titulo"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="6dp"
+        android:textColor="#000"
+        android:textSize="11sp" />
+
+</RelativeLayout >

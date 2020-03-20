@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">soundForMe</string>
+    <string name="titulo">Encontre o seu telefone!</string>
+    <string name="activarOff">Detecção pausada</string>
+    <string name="activarOn">Detectando</string>
+    <string name="tgModoOn">Por palmas</string>
+    <string name="tgModoOff">Por assobio</string>
+    <string name="tvModo">Modo de detecção!</string>
+    <string name="notifTitulo">Detecção por: </string>
+    <string name="notifBtnFinalizar">Pare a detecção</string>
+    <string name="notifBtnDetenerMusica">Parar a música</string>
+    <string name="notifBtnSalir">Sair</string>
+    <string name="abrir">Open</string>
+    <string name="cerrar">Close</string>
+    <string name="modo">"Detecção por "</string>
+    <string name="prueba_gratuita">Teste sem anúncios pela única vez</string>
+
+
+    <string name="funcionamiento_bloqueo">"Basta detectar ao bloquear o telefone"</string>
+    <string name="funcionamiento_pantalla">"Sempre detecta"</string>
+    <string name="Silbido_corto">Assobio curto</string>
+    <string name="Silbido_medio">Assobios médio</string>
+    <string name="Silbido_largo">Assobio longo</string>
+    <string name="Un_aplauso">Uma palma</string>
+    <string name="Dos_aplausos">Duas palmas</string>
+    <string name="Tres_aplausos">Três palmas</string>
+    <string name="Musica_entera">Toque toda a música</string>
+    <string name="Eleccion_segundos">Duração 3 segs</string>
+    <string name="duracion_entera">TODA A MÚSICA SERÁ TOCADA!</string>
+    <string name="duracion_segs">APENAS 3 SEGUNDOS DE MÚSICA SERÃO TOCADAS!</string>
+
+
+    <string name="rep_sonido_ejemplo">Reproduzir som de amostra</string>
+    <string name="instrucciones_uso">Instruções de Uso</string>
+    <string name="instrucciones_aplauso">Pelo menos um aplauso "claro" e "alto" deve ser realizado, como mostrado no áudio da amostra.</string>
+    <string name="instrucciones_silbido">Os assobios são curtos, mas podem ser alterados na parte de configurações na tela principal.</string>
+    <string name="nota_general_foot">
+        As configurações estão localizadas na tela principal. O modo de operação de bloqueio é usado para
+        NÃO detectar o telefone enquanto ele está em uso e, assim, ser capaz de fazer chamadas e enviar áudio,
+        além de ser capaz de assistir vídeos ou reproduzir sem soar por sons semelhantes aos detectados pelo
+        aplicativo. Isso é para evitar que você tenha um erro entre o Microfone e os aplicativos.
+    </string>
+    <string name="canciones_telefono">Todas as músicas e áudios do seu telefone!</string>
+    <string name="musica_predeterminada">Música padrão</string>
+
+    <string name="opciones_musica">Music options</string>
+    <string name="opciones_silbidos">Opções de assobiar</string>
+    <string name="opciones_aplausos">Opções de palma</string>
+
+    <string name="aplauso">Palmas</string>
+    <string name="silbido">Assobio</string>
+
+    <string name="califica"><a>Qualifique meu App!</a></string>
+    <string name="politicas">Políticas de privacidade</string>
+
+    <string name="acepta_politicas">Aceitar políticas!</string>
+    <string name="texto_politicas">
+        <![CDATA[
+        <div data-packed="true" style="width: 940px; pointer-events: none;" class="txtNew" id="comp-k601wpyq1"><p class="font_9" style="line-height:1.875em;"><span class="color_11">FromMeToYou built the soundForMe app as an Ad Supported app. This SERVICE is provided by FromMeToYou at no cost and is intended for use as is.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">If you choose to use my Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that I collect is used for providing and improving the Service. I will not use or share your information with anyone except as described in this Privacy Policy.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which is accessible at soundForMe unless otherwise defined in this Privacy Policy.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Information Collection and Use</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">For a better experience, while using our Service, I may require you to provide us with certain personally identifiable information, including but not limited to ID de Publicidad para Android. The information that I request will be retained on your device and is not collected by me in any way.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">The app does use third party services that may collect information used to identify you.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Link to privacy policy of third party service providers used by the app</span></p><ul class="font_9 color_11" style="text-align:left;"><li style="line-height:1.875em;"><p class="font_9" style="line-height:1.875em;"><span class="color_11"><span style="text-decoration:underline;"><a href="https://www.google.com/policies/privacy/" target="_blank" data-content="https://www.google.com/policies/privacy/" data-type="external" rel="nofollow noopener noreferrer">Google Play Services</a></span></span></p></li><li style="line-height:1.875em;"><p class="font_9" style="line-height:1.875em;"><span class="color_11"><span style="text-decoration:underline;"><a href="https://support.google.com/admob/answer/6128543?hl=en" target="_blank" data-content="https://support.google.com/admob/answer/6128543?hl=en" data-type="external" rel="nofollow noopener noreferrer">AdMob</a></span></span></p></li><li style="line-height:1.875em;"><p class="font_9" style="line-height:1.875em;"><span class="color_11"><span style="text-decoration:underline;"><a href="https://firebase.google.com/policies/analytics" target="_blank" data-content="https://firebase.google.com/policies/analytics" data-type="external" rel="nofollow noopener noreferrer">Firebase Analytics</a></span></span></p></li><li style="line-height:1.875em;"><p class="font_9" style="line-height:1.875em;"><span class="color_11"><span style="text-decoration:underline;"><a href="https://firebase.google.com/terms/crashlytics" target="_blank" data-content="https://firebase.google.com/terms/crashlytics" data-type="external" rel="nofollow noopener noreferrer">Firebase Crashlytics</a></span></span></p></li></ul><p class="font_9" style="line-height:1.875em;"><span class="color_11">Log Data</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">I want to inform you that whenever you use my Service, in a case of an error in the app I collect data and information (through third party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my Service, the time and date of your use of the Service, and other statistics.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Cookies</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Cookies are files with a small amount of data that are commonly used as anonymous unique identifiers. These are sent to your browser from the websites that you visit and are stored on your device internal memory.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">This Service does not use these “cookies” explicitly. However, the app may use third party code and libraries that use “cookies” to collect information and improve their services. You have the option to either accept or refuse these cookies and know when a cookie is being sent to your device. If you choose to refuse our cookies, you may not be able to use some portions of this Service.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Service Providers</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">I may employ third-party companies and individuals due to the following reasons:</span></p><ul class="font_9 color_11" style="text-align:left;"><li style="line-height:1.875em;"><p class="font_9" style="line-height:1.875em;"><span class="color_11">To facilitate our Service;</span></p></li><li style="line-height:1.875em;"><p class="font_9" style="line-height:1.875em;"><span class="color_11">To provide the Service on our behalf;</span></p></li><li style="line-height:1.875em;"><p class="font_9" style="line-height:1.875em;"><span class="color_11">To perform Service-related services; or</span></p></li><li style="line-height:1.875em;"><p class="font_9" style="line-height:1.875em;"><span class="color_11">To assist us in analyzing how our Service is used.</span></p></li></ul><p class="font_9" style="line-height:1.875em;"><span class="color_11">I want to inform users of this Service that these third parties have access to your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Security</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">I value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and I cannot guarantee its absolute security.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Links to Other Sites</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">This Service may contain links to other sites. If you click on a third-party link, you will be directed to that site. Note that these external sites are not operated by me. Therefore, I strongly advise you to review the Privacy Policy of these websites. I have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Children’s Privacy</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">These Services do not address anyone under the age of 13. I do not knowingly collect personally identifiable information from children under 13. In the case I discover that a child under 13 has provided me with personal information, I immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact me so that I will be able to do necessary actions.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Changes to This Privacy Policy</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">I may update our Privacy Policy from time to time. Thus, you are advised to review this page periodically for any changes. I will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective immediately after they are posted on this page.</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">Contact Us</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">If you have any questions or suggestions about my Privacy Policy, do not hesitate to contact me at .</span></p><p class="font_9" style="line-height:1.875em;"><span class="color_11">This privacy policy page was created at&nbsp;<span style="text-decoration:underline;"><a href="https://privacypolicytemplate.net/" target="_blank" data-content="https://privacypolicytemplate.net/" data-type="external" rel="nofollow noopener noreferrer">privacypolicytemplate.net</a></span>&nbsp;and modified/generated by&nbsp;<span style="text-decoration:underline;"><a href="https://app-privacy-policy-generator.firebaseapp.com/" target="_blank" data-content="https://app-privacy-policy-generator.firebaseapp.com/" data-type="external" rel="nofollow noopener noreferrer">App Privacy Policy Generator</a></span></span></p></div>
+]]>
+    </string>
+
+    <string name="gracias">Obrigado por compartilhar!</string>
+    <string name="publicidad_quitada">A publicidade foi removida por 24 horas!</string>
+    <string name="quitar_toda_publicidad">Remover toda a publicidade.</string>
+
+    <string name="selecciona_app_compartir">Selecione um aplicativo para compartilhar e ser recompensado:</string>
+    <string name="cuerpo_mensaje">Este aplicativo irá ajudá-lo a encontrar o seu telefone!</string>
+    <string name="asunto_mensaje">Por favor, tente este aplicativo:</string>
+    <string name="no_hay_apps_compartir">Não há aplicativos para compartilhar</string>
+    <string name="error_al_compartir">houve um erro ao compartilhar</string>
+
+    <string name="compra_habia_realizada">Esta compra já foi feita! Boa escolha.</string>
+    <string name="compra_cancelada">A compra foi cancelada. Por favor, tente novamente.</string>
+    <string name="compra_agradecimiento">Te adoro! Ótima escolha. Agora você é um usuário premium. Muito obrigado pela sua compra.</string>
+    <string name="no_hay_musica">Música não encontrada no cartão SD</string>
+</resources>

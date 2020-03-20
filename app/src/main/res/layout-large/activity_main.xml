@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".free.MainActivity"
+    android:id="@+id/drawer"
+    android:background="#000 ">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop"
+            android:scrollX="-50dp"
+            android:src="@drawable/globe"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="24sp"
+            android:textColor="#ddd"
+            app:layout_constraintBottom_toTopOf="@+id/tv_modo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tg_activar"
+            app:layout_constraintVertical_bias="0.594" />
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="338dp"
+            android:layout_height="53dp"
+            android:text="@string/titulo"
+            android:textColor="#ffffff"
+            android:textAlignment="center"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMaxTextSize="62sp"
+            app:autoSizeMinTextSize="28sp"
+            app:autoSizeStepGranularity="2sp"
+            app:fontFamily="sans-serif-condensed-medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.145" />
+
+
+        <ToggleButton
+            android:id="@+id/tg_activar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent=".5"
+            app:layout_constraintHeight_percent=".06"
+            android:layout_margin="9dp"
+            android:background="@drawable/button_borders_off"
+            android:padding="12dp"
+            android:textColor="#ffffff"
+            android:textOff="@string/activarOff"
+            android:textOn="@string/activarOn"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:fontFamily="sans-serif-condensed-medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.262" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_cambiar_musica"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cambiar_musica"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view"
+            app:layout_constraintEnd_toEndOf="@+id/image_view"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.976">
+
+        </androidx.appcompat.widget.AppCompatImageButton>
+
+        <TextView
+            android:id="@+id/tv_modo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/tvModo"
+            android:textColor="#ffffff"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            app:fontFamily="sans-serif-condensed-medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/titulo"
+            app:layout_constraintVertical_bias="0.276" />
+
+        <ToggleButton
+            android:id="@+id/tg_modo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent=".35"
+            app:layout_constraintHeight_percent=".06"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/button_borders"
+            android:padding="12dp"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textOff="@string/tgModoOff"
+            android:textOn="@string/tgModoOn"
+            app:fontFamily="sans-serif-condensed-medium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tg_activar"
+            app:layout_constraintVertical_bias="0.269" />
+
+        <Button
+            android:id="@+id/btn_config"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@drawable/config"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tg_modo"
+            app:layout_constraintTop_toTopOf="@+id/tg_modo"
+            app:layout_constraintVertical_bias="0.025" />
+
+        <ToggleButton
+            android:id="@+id/btn_vibrate"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/vibrate_off"
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintBottom_toTopOf="@+id/btn_flaslight"
+            app:layout_constraintEnd_toEndOf="@+id/image_view"
+            app:layout_constraintHorizontal_bias="0.043"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ToggleButton
+            android:id="@+id/btn_flaslight"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="@drawable/real_flash_off"
+            android:textOff=""
+            android:textOn=""
+            app:layout_constraintBottom_toTopOf="@+id/btn_cambiar_musica"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.045"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:onClick="calificaApp"
+            android:id="@+id/btnCalifica"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.3"
+            app:layout_constraintHeight_percent="0.06"
+            android:background="@android:color/transparent"
+            android:text="@string/califica"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="16sp"
+            app:autoSizeMaxTextSize="36sp"
+            app:autoSizeMinTextSize="6sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.929"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.907" />
+
+        <Button
+            android:id="@+id/btn_instrucciones"
+            android:textAllCaps="false"
+            android:background="@android:color/transparent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintHeight_percent="0.07"
+            app:autoSizeMaxTextSize="36sp"
+            app:autoSizeMinTextSize="6sp"
+            app:autoSizeStepGranularity="1sp"
+            app:autoSizeTextType="uniform"
+            android:text="@string/instrucciones_uso"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.921"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.977" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/bannerAdMainBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:adSize="SMART_BANNER"
+            app:adUnitId="ca-app-pub-9206493690157601/4395850245"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.494"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.048" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--app:adUnitId="ca-app-pub-9206493690157601/4395850245"--> <!--AD REAL-->
+    <!--app:adUnitId="ca-app-pub-3940256099942544/6300978111"--> <!--AD TEST-->
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        app:headerLayout="@layout/header"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        app:itemTextColor="#329932"
+        app:menu="@menu/drawer"
+        android:layout_gravity="start|left">
+    </com.google.android.material.navigation.NavigationView>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>
