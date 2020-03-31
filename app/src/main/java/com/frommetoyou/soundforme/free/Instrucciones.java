@@ -1,4 +1,4 @@
-package com.frommetoyou.soundforme.free;
+package com.frommetoyou.soundforme;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -8,8 +8,6 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-
-import com.frommetoyou.soundforme.R;
 
 import java.io.IOException;
 

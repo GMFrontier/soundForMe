@@ -1,6 +1,5 @@
-package com.frommetoyou.soundforme.free;
+package com.frommetoyou.soundforme;
 
-import android.app.KeyguardManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -15,24 +14,22 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.widget.RemoteViews;
 
-import com.frommetoyou.soundforme.R;
-
 import org.greenrobot.eventbus.EventBus;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import static com.frommetoyou.soundforme.free.ListSongs.REPRODUCIR_ENTERA;
-import static com.frommetoyou.soundforme.free.ListSongs.REPRODUCIR_SEGUNDOS;
-import static com.frommetoyou.soundforme.free.MainActivity.ACTION_MODO_SILBIDO;
-import static com.frommetoyou.soundforme.free.MainActivity.ACTION_STOP_SERVICE;
-import static com.frommetoyou.soundforme.free.MainActivity.CANT_APLAUSOS;
-import static com.frommetoyou.soundforme.free.MainActivity.CANT_SILBIDOS;
-import static com.frommetoyou.soundforme.free.MainActivity.FLASH;
-import static com.frommetoyou.soundforme.free.MainActivity.FUNCIONAMIENTO;
-import static com.frommetoyou.soundforme.free.MainActivity.TIPO_DELAY_SAVE;
-import static com.frommetoyou.soundforme.free.MainActivity.VIBRAR;
+import static com.frommetoyou.soundforme.ListSongs.REPRODUCIR_ENTERA;
+import static com.frommetoyou.soundforme.ListSongs.REPRODUCIR_SEGUNDOS;
+import static com.frommetoyou.soundforme.MainActivity.ACTION_MODO_SILBIDO;
+import static com.frommetoyou.soundforme.MainActivity.ACTION_STOP_SERVICE;
+import static com.frommetoyou.soundforme.MainActivity.CANT_APLAUSOS;
+import static com.frommetoyou.soundforme.MainActivity.CANT_SILBIDOS;
+import static com.frommetoyou.soundforme.MainActivity.FLASH;
+import static com.frommetoyou.soundforme.MainActivity.FUNCIONAMIENTO;
+import static com.frommetoyou.soundforme.MainActivity.TIPO_DELAY_SAVE;
+import static com.frommetoyou.soundforme.MainActivity.VIBRAR;
 
 public class DetectorService extends Service {
     private Intent detenerMusicaDeteccion;
@@ -214,18 +211,16 @@ public class DetectorService extends Service {
         return null;
     }
 
-    public class PhoneUnlockedReceiver extends BroadcastReceiver {
 
+    public class PhoneUnlockedReceiver extends BroadcastReceiver {
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         @Override
         public void onReceive(Context context, Intent intent) {
-
-            KeyguardManager keyguardManager = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
             if (funcionamiento_solo_durante_bloqueo) {
                 pararThreads();
                 handler.postDelayed(pararThreads,420);
                 funcionamiento_solo_durante_bloqueo=true;
-                System.out.println("SE HA RESUMIDO LA ACTIVIDAD");
+                System.out.println("SE HA DESBLOQUEADO EL TELEFONO");
             }
         }
     }
@@ -237,7 +232,7 @@ public class DetectorService extends Service {
             if (funcionamiento_solo_durante_bloqueo) {
                 iniciarThreads();
                 funcionamiento_solo_durante_bloqueo=true;
-                System.out.println("SE HA PARADO LA ACTIVIDAD");
+                System.out.println("SE HA APAGADO LA PANTALLA");
             }
         }
     }

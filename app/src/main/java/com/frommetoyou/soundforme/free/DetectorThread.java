@@ -1,4 +1,4 @@
-package com.frommetoyou.soundforme.free;
+package com.frommetoyou.soundforme;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 
-import com.frommetoyou.soundforme.R;
 import com.musicg.api.WhistleApi;
 import com.musicg.wave.WaveHeader;
 
@@ -26,8 +25,8 @@ import static android.content.Context.VIBRATOR_SERVICE;
 import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
 import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
 import static android.hardware.Camera.Parameters.FLASH_MODE_TORCH;
-import static com.frommetoyou.soundforme.free.MainActivity.ACTION_MODO_APLAUSO;
-import static com.frommetoyou.soundforme.free.MainActivity.ACTION_MODO_SILBIDO;
+import static com.frommetoyou.soundforme.MainActivity.ACTION_MODO_APLAUSO;
+import static com.frommetoyou.soundforme.MainActivity.ACTION_MODO_SILBIDO;
 
 //import com.crashlytics.android.Crashlytics;
 
@@ -36,7 +35,7 @@ public class DetectorThread extends Thread {
     private int PAUSA_DELAY = 1600;//5600 era
     private final static int SLEEP_ACTIVO = 28;//250
     private final static int SLEEP_INACTIVO = 33;//300
-    private final static int SLEEP_MUY_ACTIVO = 20; //15
+    private final static int SLEEP_MUY_ACTIVO = 18; //15
     private final static int AHORRO_TEMPORIZADOR = 1000*60;
     private final static int INTERMITENCIA_ACTIVA=350;
     private final static int INTERMITENCIA_INACTIVA=1500;

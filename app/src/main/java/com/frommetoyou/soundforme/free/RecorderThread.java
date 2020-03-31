@@ -1,4 +1,4 @@
-package com.frommetoyou.soundforme.free;
+package com.frommetoyou.soundforme;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;

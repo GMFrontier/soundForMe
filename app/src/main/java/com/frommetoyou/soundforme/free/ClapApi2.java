@@ -1,4 +1,4 @@
-package com.frommetoyou.soundforme.free;
+package com.frommetoyou.soundforme;
 
 import com.musicg.api.DetectionApi;
 import com.musicg.wave.WaveHeader;

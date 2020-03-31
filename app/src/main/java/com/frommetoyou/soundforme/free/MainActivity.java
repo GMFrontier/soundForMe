@@ -1,4 +1,4 @@
-package com.frommetoyou.soundforme.free;
+package com.frommetoyou.soundforme;
 
 import android.Manifest;
 import android.content.ComponentName;
@@ -33,8 +33,6 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
-import com.frommetoyou.soundforme.BuildConfig;
-import com.frommetoyou.soundforme.R;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -82,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final static String TIEMPO ="tiempo";
     private final static String UNICA_PRUEBA_CONSUMIDA="unica_prueba";
     private final static String PRUEBA_YA_CONSUMIDA="prueba_ya_fue_consumida";
-    private final static String ITEM_SKU_ADROMOVAL="test_free_ad_purchase";
+    private final static String ITEM_SKU_ADROMOVAL="remove_ad_purchase";
     /*
     Banner	ca-app-pub-3940256099942544/6300978111
     Intersticial	ca-app-pub-3940256099942544/1033173712

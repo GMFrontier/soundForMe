@@ -1,4 +1,4 @@
-package com.frommetoyou.soundforme.free;
+package com.frommetoyou.soundforme;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,11 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.frommetoyou.soundforme.R;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.frommetoyou.soundforme.free.MainActivity.ACEPTA_POLITICAS;
+import static com.frommetoyou.soundforme.MainActivity.ACEPTA_POLITICAS;
 
 public class AceptarPoliticas extends AppCompatActivity {
 
