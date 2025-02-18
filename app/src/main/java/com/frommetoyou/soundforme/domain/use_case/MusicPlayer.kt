@@ -3,31 +3,37 @@ package com.frommetoyou.soundforme.domain.use_case
 import android.content.Context
 import android.media.AudioAttributes
 import android.media.AudioManager
-import android.media.AudioRecord
 import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.net.Uri
 import android.provider.Settings
-import androidx.compose.ui.platform.LocalContext
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
-import org.tensorflow.lite.support.audio.TensorAudio
-import org.tensorflow.lite.task.audio.classifier.AudioClassifier
-import java.util.Timer
-import kotlin.concurrent.scheduleAtFixedRate
-import kotlin.coroutines.coroutineContext
+import androidx.core.net.toUri
+import com.frommetoyou.soundforme.domain.model.SettingConfig
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class MusicPlayer(
-    private val context: Context
+    private val context: Context,
+    private val settingsManager: SettingsManager
 ) {
+    private var mediaPlayer: MediaPlayer? = null
+    private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private var previousVolume: Int = 0
 
-    var mediaPlayer: MediaPlayer? = null
-    val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-    var previousVolume: Int = 0
+    private var alarmUri: Uri? = null
 
-    val alarmUri: Uri =  RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-        ?: Settings.System.DEFAULT_ALARM_ALERT_URI
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            settingsManager.getSettings().collectLatest {
+                alarmUri = it.musicItem.uri.toUri()
+            }
+        }
+    }
+    fun setAlarmUri(uri: Uri){
+        alarmUri = uri
+    }
 
     fun startMusic() {
         mediaPlayer?.let {
@@ -46,7 +52,7 @@ class MusicPlayer(
         )
 
         mediaPlayer = MediaPlayer().apply {
-            setDataSource(context, alarmUri)
+            setDataSource(context, alarmUri ?: SettingConfig().musicItem.uri.toUri())
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ALARM) // Ensures it plays as an alarm

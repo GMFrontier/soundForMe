@@ -1,31 +1,26 @@
 package com.frommetoyou.soundforme.presentation.ui.screens
 
+import android.Manifest.permission.RECORD_AUDIO
+import android.app.Activity
 import android.graphics.Paint
-import android.text.Layout
+import android.graphics.Typeface
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -40,51 +35,54 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.frommetoyou.soundforme.R
-import com.frommetoyou.soundforme.domain.use_case.Classification
-import com.frommetoyou.soundforme.presentation.ui.components.ActiveButton
+import com.frommetoyou.soundforme.domain.model.ActiveButton
+import com.frommetoyou.soundforme.domain.model.SettingConfig
+import com.frommetoyou.soundforme.presentation.ui.util.UiText
+import com.frommetoyou.soundforme.presentation.ui.util.findAndroidActivity
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import org.koin.androidx.compose.koinViewModel
+import kotlin.math.cos
 import kotlin.math.pow
+import kotlin.math.sin
 import kotlin.math.sqrt
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     val viewModel = koinViewModel<HomeViewModel>()
 
-    var activeMode by remember {
-        mutableStateOf<ActiveButton>(ActiveButton.Off)
+    val settings = viewModel.settings.collectAsState()
+
+    val activity = LocalContext.current.findAndroidActivity()
+
+    val recordPermissionState = rememberPermissionState(permission = RECORD_AUDIO) { isGranted ->
+        if(isGranted) handleDetector(settings, viewModel, activity!!)
     }
+
+    var activeMode = settings.value.active
+
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
     var radius by remember {
         mutableFloatStateOf(0f)
     }
-    val outputSrt by viewModel.outputStr.collectAsStateWithLifecycle()
+    val modeText = UiText.StringResource(
+        R.string.home_mode,
+        arrayOf(settings.value.detectionMode)
+    ).asString(LocalContext.current)
 
-    when (outputSrt) {
-        Classification.WHISTLE, Classification.CLAP -> {
-            println("HomeScreen")
-        }
 
-        else -> {
-            println("NADA DETECTADO $outputSrt")
-        }
-    }
-    DisposableEffect(activeMode) {
-        if (activeMode == ActiveButton.On) {
-            println("Iniciando detección")
-
-            viewModel.startDetector()
-        }
-        onDispose {
-            println("Deteniendo detección")
-            viewModel.stopDetector()
+    LaunchedEffect(settings.value.active) {
+        activity?.let {
+            if(settings.value.active == ActiveButton.On) viewModel.startDetector(it)
         }
     }
     Image(
@@ -99,7 +97,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             },
         contentScale = ContentScale.None,
     )
-    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val screenDimensions = LocalConfiguration.current
     val activeColor =
         if (activeMode == ActiveButton.On) Color(0xFFFFFFFF) else
             MaterialTheme.colorScheme.error
@@ -114,19 +112,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
         )
     Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text =
-                if (activeMode == ActiveButton.On) "Detección activada \n${viewModel.outputStr.collectAsState().value}"
-                else "Detección desactivada",
-                style = MaterialTheme.typography.headlineMedium,
-                textAlign = TextAlign.Center,
-            )
-        }
         Canvas(modifier = Modifier
             .fillMaxSize()
 
@@ -137,11 +122,18 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                                 (it.y - circleCenter.y).pow(2)
                     )
                     if (distance <= radius) {
-                        activeMode = !activeMode
+                        activity?.let {
+
+                            if (recordPermissionState.status.isGranted) {
+                                handleDetector(settings, viewModel, it)
+                            } else {
+                                recordPermissionState.launchPermissionRequest()
+                            }
+                        }
                     }
                 }
             }) {
-            radius = (screenWidth.dp / 2 - 30.dp).toPx()
+            radius = (screenDimensions.screenWidthDp.dp / 2 - 30.dp).toPx()
 
             circleCenter = Offset(
                 this.center.x,
@@ -176,8 +168,43 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         )
                     }
                 }
+                val text = modeText
+                val textPaint = Paint().apply {
+                    color = Color.White.toArgb()
+                    textSize = 40f
+                    typeface = Typeface.DEFAULT_BOLD
+                }
+
+                val textRadius = radius + 45f
+                val angleStep = 45f / (text.length )
+                val startAngle = -90f - ((angleStep * (text.length-1)) / 2)
+
+                for (i in text.indices) {
+                    val angle = Math.toRadians(startAngle + (i * angleStep).toDouble())
+
+                    val x = (circleCenter.x + textRadius * cos(angle)).toFloat()
+                    val y = (circleCenter.y + textRadius * sin(angle)).toFloat()
+
+                    // Save the canvas state
+                    save()
+                    rotate((startAngle+ i * angleStep) + 90, x, y)
+                    drawText(text[i].toString(), x, y, textPaint)
+                    restore()
+                }
             }
         }
     }
 
+}
+
+private fun handleDetector(
+    settings: State<SettingConfig>,
+    viewModel: HomeViewModel,
+    it: Activity
+) {
+    if (settings.value.active == ActiveButton.On) {
+        viewModel.stopDetector(it)
+    } else {
+        viewModel.startDetector(it)
+    }
 }

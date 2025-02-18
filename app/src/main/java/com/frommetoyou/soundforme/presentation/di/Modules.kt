@@ -1,7 +1,12 @@
 package com.frommetoyou.soundforme.presentation.di
 
+import android.content.Context
+import androidx.datastore.dataStore
+import com.frommetoyou.soundforme.data.storage.SettingConfigSerializer
 import com.frommetoyou.soundforme.domain.use_case.AudioClassifierUseCase
+import com.frommetoyou.soundforme.domain.use_case.DetectorService
 import com.frommetoyou.soundforme.domain.use_case.MusicPlayer
+import com.frommetoyou.soundforme.domain.use_case.SettingsManager
 import com.frommetoyou.soundforme.presentation.ui.screens.HomeViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.viewmodel.dsl.viewModel
@@ -16,10 +21,16 @@ val modules = module {
         classifier
     }
     single {
-        MusicPlayer(get())
+        SettingsManager(get())
+    }
+    single {
+        MusicPlayer(get(), get())
     }
     single {
         AudioClassifierUseCase(get())
     }
-    viewModel { HomeViewModel(get(), get()) }
+    single {
+        DetectorService()
+    }
+    viewModel { HomeViewModel(get()) }
 }

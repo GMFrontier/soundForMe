@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">soundForMe</string>
+    <string name="off">Off</string>
+    <string name="intermittent">Intermittent</string>
+    <string name="fixed">Fixed</string>
+    <string name="vibration_mode">Vibration Mode</string>
+    <string name="flash_mode">Flash Mode</string>
+    <string name="detection_active">Detector active</string>
+    <string name="detection_mode">"Activation mode: "</string>
+    <string name="detector_notification">Detector notification</string>
+    <string name="settings">Settings</string>
+    <string name="whistles">Whistles</string>
+    <string name="claps">Claps</string>
+    <string name="settings_title">Customize Your Settings!</string>
+    <string name="whistle_or_clap">Whistle or Clap?</string>
+    <string name="choose_mode">Choose the sound you want to use</string>
+    <string name="home_mode">%1$s</string>
+    <string name="select_audio">Select the audio you want to reproduce</string>
+    <string name="seleccionar">Select</string>
+    <string name="current_audio">Current audio:</string>
+    <string name="choose_music">Select your music</string>
+    <string name="play">Play</string>
+    <string name="select">Select</string>
+    <string name="default_alarm">Default alarm</string>
+    <string name="stop">Stop</string>
 </resources>

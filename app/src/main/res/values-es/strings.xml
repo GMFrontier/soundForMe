@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">soundForMe</string>
+    <string name="off">Apagado</string>
+    <string name="intermittent">Intermitente</string>
+    <string name="fixed">Fijo</string>
+    <string name="vibration_mode">Modo de vibración</string>
+    <string name="flash_mode">Modo de Flash</string>
+    <string name="detection_active">Detección activada</string>
+    <string name="detection_mode">"Activation mode: "</string>
+    <string name="detector_notification">Notificación del detector</string>
+    <string name="settings">Configuración</string>
+    <string name="whistles">Silbidos</string>
+    <string name="claps">Aplausos</string>
+    <string name="settings_title">¡Personaliza tu Configuración!</string>
+    <string name="whistle_or_clap">¿Silbido o aplauso?</string>
+    <string name="choose_mode">Elige el sonido que deseas usar</string>
+    <string name="home_mode">Modo: %1$s</string>
+    <string name="select_audio">Selecciona el audio que deseas reproducir</string>
+    <string name="seleccionar">Seleccionar</string>
+    <string name="current_audio">Audio actual:</string>
+    <string name="choose_music">Selecciona tu música</string>
+    <string name="play">Reproducir</string>
+    <string name="select">Seleccionar</string>
+    <string name="default_alarm">Alarma predeterminada</string>
+    <string name="stop">Detener</string>
+</resources>

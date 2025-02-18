@@ -1,38 +1,136 @@
 package com.frommetoyou.soundforme.presentation.ui.screens
 
+import android.content.ContentResolver
+import android.content.Context
+import android.content.Intent
+import android.provider.MediaStore
+import android.provider.MediaStore.Audio.Media
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.frommetoyou.soundforme.domain.model.ActiveButton
 import com.frommetoyou.soundforme.domain.use_case.AudioClassifierUseCase
-import com.frommetoyou.soundforme.domain.use_case.Classification
 import com.frommetoyou.soundforme.domain.use_case.MusicPlayer
+import com.frommetoyou.soundforme.domain.use_case.SettingsManager
+import com.frommetoyou.soundforme.domain.model.Classification
+import com.frommetoyou.soundforme.domain.model.MusicItem
+import com.frommetoyou.soundforme.domain.model.SettingConfig
+import com.frommetoyou.soundforme.domain.use_case.DetectorService
+import com.frommetoyou.soundforme.domain.use_case.DetectorService.Actions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val audioClassifierUseCase: AudioClassifierUseCase,
-    private val musicPlayer: MusicPlayer
+    private val settingsManager: SettingsManager,
 ) : ViewModel() {
+    private var contentResolver: ContentResolver? = null
 
-    private val _outputStr = MutableStateFlow(Classification.UNKNOWN)
-    val outputStr: StateFlow<Classification> = _outputStr // Expose as immutable StateFlow
+    private val _musicList = MutableStateFlow(listOf<MusicItem>())
+    val musicList: StateFlow<List<MusicItem>> = _musicList
 
+    private val _musicPermissionGranted = MutableStateFlow(false)
+    val musicPermissionGranted: StateFlow<Boolean> = _musicPermissionGranted
 
-    fun startDetector() {
-        viewModelScope.launch {
-            audioClassifierUseCase.startDetector().collectLatest { result ->
-                _outputStr.value = result
-                println("HomeViewModel")
-                if(result == Classification.CLAP || result == Classification.WHISTLE) {
-                    musicPlayer.startMusic()
-                }
+    private val _settings = MutableStateFlow(SettingConfig())
+    val settings: StateFlow<SettingConfig> = _settings
+
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            settingsManager.getSettings().collectLatest {
+                _settings.value = it
             }
         }
     }
 
-    fun stopDetector() {
-        audioClassifierUseCase.stopDetector()
-        musicPlayer.stopMusic()
+    fun setMusicPermission() {
+        _musicPermissionGranted.value = true
+    }
+
+    suspend fun loadMusicList() = viewModelScope.launch(Dispatchers.Default) {
+        val projection = arrayOf(
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.DISPLAY_NAME,
+            MediaStore.Audio.Media.DATA,
+        )
+
+        val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0"
+        val sortOrder = "${MediaStore.Audio.Media.DATE_ADDED} DESC"
+
+        contentResolver?.let { resolver ->
+            val cursor = resolver.query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                selection,
+                null,
+                sortOrder
+            )
+            val musicList = mutableListOf<MusicItem>()
+            cursor?.use {
+                val idColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+                val nameColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
+                val uriColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+
+                while (it.moveToNext()) {
+                    val id = it.getLong(idColumn)
+                    val name = it.getString(nameColumn)
+                    val uri = it.getString(uriColumn)
+
+                    musicList.add(MusicItem(id, name, uri))
+                }
+                _musicList.value = musicList
+            }
+        }
+    }
+
+    fun setContentResolver(contentResolver: ContentResolver) {
+        this.contentResolver = contentResolver
+    }
+
+    fun saveSettings(settings: SettingConfig) {
+        viewModelScope.launch {
+            _settings.value = settings
+            settingsManager.saveSettings(settings)
+        }
+    }
+
+    fun startDetector(context: Context) {
+        viewModelScope.launch {
+            saveSettings(
+                settings.value.copy(
+                    active = ActiveButton.On
+                )
+            )
+            Log.v("SERVICESS", "INICIALIZANDO")
+            val intent = Intent(context, DetectorService::class.java).apply {
+                action = Actions.START.toString()
+            }
+            context.startService(intent)
+        }
+    }
+
+    fun stopDetector(context: Context) {
+        saveSettings(
+            settings.value.copy(
+                active = ActiveButton.Off
+            )
+        )
+        Log.v("SERVICESS", "DETENIENDO")
+
+        val intent = Intent(context, DetectorService::class.java).apply {
+            action = Actions.STOP.toString()
+        }
+        context.stopService(intent)
     }
 }

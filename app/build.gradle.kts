@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.compose.ui.text.google.fonts)
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.task.audio)
+    implementation(libs.androidx.datastore)
 //    implementation(libs.tensorflow.lite.support)
 //    implementation(libs.tensorflow.lite.task.vision)
     api(libs.koin.core)
@@ -70,6 +71,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.google.accompanist.permissions)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
