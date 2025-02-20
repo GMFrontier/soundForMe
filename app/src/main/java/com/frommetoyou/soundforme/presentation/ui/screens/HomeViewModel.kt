@@ -43,6 +43,9 @@ class HomeViewModel(
     private val _settings = MutableStateFlow(SettingConfig())
     val settings: StateFlow<SettingConfig> = _settings
 
+    private val _openPrivacyPolicy = MutableStateFlow(false)
+    val openPrivacyPolicy: StateFlow<Boolean> = _openPrivacyPolicy
+
     init {
         CoroutineScope(Dispatchers.IO).launch {
             settingsManager.getSettings().collectLatest {
@@ -55,7 +58,7 @@ class HomeViewModel(
         _musicPermissionGranted.value = true
     }
 
-    suspend fun loadMusicList() = viewModelScope.launch(Dispatchers.Default) {
+    fun loadMusicList() = viewModelScope.launch(Dispatchers.IO) {
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.DISPLAY_NAME,
@@ -107,12 +110,15 @@ class HomeViewModel(
 
     fun startDetector(context: Context) {
         viewModelScope.launch {
+            if(settings.value.isPrivacyAccepted.not()){
+                _openPrivacyPolicy.value = true
+                return@launch
+            }
             saveSettings(
                 settings.value.copy(
                     active = ActiveButton.On
                 )
             )
-            Log.v("SERVICESS", "INICIALIZANDO")
             val intent = Intent(context, DetectorService::class.java).apply {
                 action = Actions.START.toString()
             }
@@ -126,11 +132,13 @@ class HomeViewModel(
                 active = ActiveButton.Off
             )
         )
-        Log.v("SERVICESS", "DETENIENDO")
-
         val intent = Intent(context, DetectorService::class.java).apply {
             action = Actions.STOP.toString()
         }
         context.stopService(intent)
+    }
+
+    fun setOpenPrivacyPolicy(b: Boolean) {
+        _openPrivacyPolicy.value = b
     }
 }

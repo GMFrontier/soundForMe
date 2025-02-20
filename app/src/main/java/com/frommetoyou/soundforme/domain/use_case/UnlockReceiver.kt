@@ -15,10 +15,9 @@ class ScreenUnlockReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         viewModel = KoinJavaComponent.getKoin().get()
         if (intent.action == Intent.ACTION_USER_PRESENT) {
-            CoroutineScope(Dispatchers.IO).launch {
-                viewModel?.stopDetector(context)
-
-            }
+//            CoroutineScope(Dispatchers.IO).launch {
+//                viewModel?.stopDetector(context)
+//            }
         }
     }
 }

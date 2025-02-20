@@ -16,3 +16,5 @@ local.properties
 ./app/src/main/assets
 ./app/src/main/java/com/frommetoyou/soundforme/domain/use_case/AudioClassifierUseCase
 ./app/src/main/java/com/frommetoyou/soundforme/domain/use_case/DetectorService.kt
+./keys
+./app/google-services.json

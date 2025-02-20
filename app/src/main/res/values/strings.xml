@@ -23,4 +23,10 @@
     <string name="select">Select</string>
     <string name="default_alarm">Default alarm</string>
     <string name="stop">Stop</string>
+    <string name="permissions_1">This app needs the Music and Audio permission to list and use all the music in your device</string>
+    <string name="permissions_2">Request permission</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_1">For this application to function properly, you need to confirm that you agree with the privacy policies</string>
+    <string name="read_privacy">Go to Privacy Policy</string>
+    <string name="detector_off">Inactive</string>
 </resources>

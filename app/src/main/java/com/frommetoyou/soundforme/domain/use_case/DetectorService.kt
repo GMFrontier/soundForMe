@@ -2,7 +2,6 @@ package com.frommetoyou.soundforme.domain.use_case
 
 import android.app.PendingIntent
 import android.app.Service
-import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -12,9 +11,11 @@ import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.frommetoyou.soundforme.R
+import com.frommetoyou.soundforme.domain.model.ActiveButton
 import com.frommetoyou.soundforme.domain.model.Modes
 import com.frommetoyou.soundforme.domain.model.SettingConfig
 import com.frommetoyou.soundforme.presentation.MainActivity
@@ -88,7 +89,10 @@ class DetectorService : Service() {
                                 context = this@DetectorService,
                                 it.flashMode
                             )
-                            toggleVibration(context = this@DetectorService, it.vibrationMode)
+                            toggleVibration(
+                                context = this@DetectorService,
+                                it.vibrationMode
+                            )
                         }
                         musicPlayer?.startMusic()
                     }
@@ -96,15 +100,6 @@ class DetectorService : Service() {
             }
         }
 
-        val resultIntent = Intent(this, MainActivity::class.java)
-        val resultPendingIntent: PendingIntent? =
-            TaskStackBuilder.create(this).run {
-                addNextIntentWithParentStack(resultIntent)
-                getPendingIntent(
-                    0,
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                )
-            }
         val serviceIntent = Intent(this, DetectorService::class.java).apply {
             action = Actions.STOP.toString()
         }
@@ -115,12 +110,23 @@ class DetectorService : Service() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
+        val mainIntent = Intent(this, MainActivity::class.java).apply {
+            flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val mainPendingIntent = PendingIntent.getActivity(
+            this,
+            1,
+            mainIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
         val notification = NotificationCompat.Builder(
             this, DETECTOR_CHANNEL_ID
         ).setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(this.getString(R.string.detection_active))
             .setContentText("${this.getString(R.string.detection_mode)} ${settings?.detectionMode}")
-            .setContentIntent(resultPendingIntent)
+            .setContentIntent(mainPendingIntent)
             .addAction(
                 R.drawable.ic_launcher_foreground,
                 UiText.StringResource(R.string.stop)
@@ -150,7 +156,15 @@ class DetectorService : Service() {
         toggleFlashlight(this@DetectorService, Modes.Off)
         musicPlayer?.stopMusic()
         unregisterReceiver(screenUnlockReceiver)
-
+        CoroutineScope(Dispatchers.IO).launch {
+            settings?.let {
+                settingsManager.saveSettings(
+                    it.copy(
+                        active = ActiveButton.Off
+                    )
+                )
+            }
+        }
         stopSelf()
     }
 
@@ -163,11 +177,9 @@ class DetectorService : Service() {
                     cameraManager.cameraIdList.firstOrNull() ?: return
                 cameraManager.setTorchMode(cameraId, true)
             }
-
             Modes.Intermittent -> {
                 startFlashing(context)
             }
-
             else -> {
                 stopFlashing(context)
             }

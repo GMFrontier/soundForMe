@@ -67,6 +67,7 @@ import com.frommetoyou.soundforme.presentation.ui.util.findAndroidActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.android.gms.ads.rewarded.RewardedAd
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -168,7 +169,7 @@ fun MusicSelectionScreen(
                                 androidx.compose.material3.Icon(
                                     imageVector = Icons.Rounded.Close,
                                     contentDescription = null,
-                                    modifier = Modifier.pointerInput(true){
+                                    modifier = Modifier.pointerInput(true) {
                                         detectTapGestures {
                                             searchQuery = ""
                                             focusedSearch = false
@@ -237,11 +238,11 @@ fun MusicSelectionScreen(
                                         .padding(4.dp)
                                         .pointerInput(true) {
                                             detectTapGestures {
-                                                    if (selectedMusic != music)
-                                                        selectedMusic = music
-                                                    else
-                                                        selectedMusic =
-                                                            MusicItem()
+                                                if (selectedMusic != music)
+                                                    selectedMusic = music
+                                                else
+                                                    selectedMusic =
+                                                        MusicItem()
                                             }
                                         }
                                 ) {
@@ -255,11 +256,12 @@ fun MusicSelectionScreen(
                                         modifier = Modifier.padding(horizontal = 4.dp),
                                         colors = if (music.id != settings.value.musicItem.id)
                                             RadioButtonDefaults.colors(
-                                                selectedColor = MaterialTheme.colorScheme.onSecondary)
-                                                else RadioButtonDefaults . colors (
-                                                    selectedColor =
-                                                        MaterialTheme.colorScheme.onTertiary
-                                                    )
+                                                selectedColor = MaterialTheme.colorScheme.onSecondary
+                                            )
+                                        else RadioButtonDefaults.colors(
+                                            selectedColor =
+                                            MaterialTheme.colorScheme.onTertiary
+                                        )
                                     )
                                     Text(
                                         music.name,
@@ -320,6 +322,7 @@ fun MusicSelectionScreen(
                                     musicItem = SettingConfig().musicItem
                                 )
                             )
+
                             navController.popBackStack()
                         }
                     ) {
@@ -352,12 +355,31 @@ fun MusicSelectionScreen(
                 }
             }
         } else {
-            Column {
-                Text("Se necesita el permiso para mostrarlse su lista de audios")
-                Button(onClick = {
-                    musicPermission.launchPermissionRequest()
-                }) {
-                    Text("Solicitar permiso")
+
+            Card(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        UiText.StringResource(R.string.permissions_1).asString(
+                            LocalContext.current
+                        )
+                    )
+                    Button(
+                        modifier = Modifier.padding(top= 16.dp),
+                        onClick = {
+                        musicPermission.launchPermissionRequest()
+                    }) {
+                        Text(
+                            UiText.StringResource(R.string.permissions_2)
+                                .asString(
+                                    LocalContext.current
+                                )
+                        )
+                    }
                 }
             }
         }

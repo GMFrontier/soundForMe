@@ -63,10 +63,6 @@ fun AppBottomNavigation(navController: NavController) {
 
             bottomScreens.forEach { screen ->
                 val isSelected = currentDestination?.hierarchy?.any {
-                    Log.v(
-                        "BOTTOM:",
-                        "${it.route} ${screen.route::class.qualifiedName}"
-                    )
                     it.route == screen.route::class.qualifiedName.toString()
                 } == true
 

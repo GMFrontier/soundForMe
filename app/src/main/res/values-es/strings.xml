@@ -24,4 +24,10 @@
     <string name="select">Seleccionar</string>
     <string name="default_alarm">Alarma predeterminada</string>
     <string name="stop">Detener</string>
+    <string name="permissions_1">Esta app necesita del permiso de Música y Audio para listar y usar la música de su dispositivo</string>
+    <string name="permissions_2">Solicitar permiso</string>
+    <string name="privacy_policy">Políticas de Privacidad</string>
+    <string name="privacy_1">Para el funcionamiento de esta aplicación se necesita confirmar que usted está conforme con las políticas de privacidad</string>
+    <string name="read_privacy">Ir a las Políticas de Privacidad</string>
+    <string name="detector_off">Desactivado</string>
 </resources>

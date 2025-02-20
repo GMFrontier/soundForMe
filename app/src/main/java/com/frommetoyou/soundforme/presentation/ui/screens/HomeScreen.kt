@@ -57,14 +57,20 @@ import kotlin.math.sqrt
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     val viewModel = koinViewModel<HomeViewModel>()
-
+    val adsViewModel = koinViewModel<AdsViewModel>()
     val settings = viewModel.settings.collectAsState()
+
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        adsViewModel.loadRewardedAd(context)
+    }
 
     val activity = LocalContext.current.findAndroidActivity()
 
-    val recordPermissionState = rememberPermissionState(permission = RECORD_AUDIO) { isGranted ->
-        if(isGranted) handleDetector(settings, viewModel, activity!!)
-    }
+    val recordPermissionState =
+        rememberPermissionState(permission = RECORD_AUDIO) { isGranted ->
+            if (isGranted) handleDetector(settings, viewModel, activity!!)
+        }
 
     var activeMode = settings.value.active
 
@@ -74,23 +80,29 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     var radius by remember {
         mutableFloatStateOf(0f)
     }
-    val modeText = UiText.StringResource(
-        R.string.home_mode,
-        arrayOf(settings.value.detectionMode)
-    ).asString(LocalContext.current)
-
+    val modeText = if(settings.value.active == ActiveButton.Off) {
+        UiText.StringResource(
+            R.string.detector_off
+        ).asString(LocalContext.current)
+    } else {
+        UiText.StringResource(
+            R.string.home_mode, arrayOf(settings.value.detectionMode)
+        ).asString(LocalContext.current)
+    }
 
     LaunchedEffect(settings.value.active) {
         activity?.let {
-            if(settings.value.active == ActiveButton.On) viewModel.startDetector(it)
+            if (settings.value.active == ActiveButton.On) viewModel.startDetector(
+                it
+            )
         }
     }
     Image(
-        painter = painterResource(R.drawable.home_background7),
+        painter = painterResource(R.drawable.home_background72),
         contentDescription = "background",
         modifier = Modifier
             .fillMaxSize()
-            .offset(x = (-100).dp)
+            .offset()
             .wrapContentSize(unbounded = true)
             .graphicsLayer {
                 scaleX = -1f
@@ -99,14 +111,11 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     )
     val screenDimensions = LocalConfiguration.current
     val activeColor =
-        if (activeMode == ActiveButton.On) Color(0xFFFFFFFF) else
-            MaterialTheme.colorScheme.error
+        if (activeMode == ActiveButton.On) Color(0xFFFFFFFF) else MaterialTheme.colorScheme.error
     val iconColor =
-        if (activeMode == ActiveButton.On) MaterialTheme.colorScheme.primary else
-            MaterialTheme.colorScheme.onError
+        if (activeMode == ActiveButton.On) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onError
     val shadowColor =
-        if (activeMode == ActiveButton.On) MaterialTheme.colorScheme.primary
-            .toArgb() else MaterialTheme.colorScheme.error.toArgb()
+        if (activeMode == ActiveButton.On) MaterialTheme.colorScheme.primary.toArgb() else MaterialTheme.colorScheme.error.toArgb()
     val icon = rememberVectorPainter(
         image = ImageVector.vectorResource(R.drawable.on_off),
 
@@ -118,8 +127,9 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             .pointerInput(true) {
                 detectTapGestures {
                     val distance = sqrt(
-                        (it.x - circleCenter.x).pow(2) +
-                                (it.y - circleCenter.y).pow(2)
+                        (it.x - circleCenter.x).pow(2) + (it.y - circleCenter.y).pow(
+                            2
+                        )
                     )
                     if (distance <= radius) {
                         activity?.let {
@@ -136,8 +146,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             radius = (screenDimensions.screenWidthDp.dp / 2 - 30.dp).toPx()
 
             circleCenter = Offset(
-                this.center.x,
-                (this.center.y * 2 + 40.dp.toPx())
+                this.center.x, (this.center.y * 2 + 40.dp.toPx())
             )
 
             drawContext.canvas.nativeCanvas.apply {
@@ -148,10 +157,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     Paint().apply {
                         color = activeColor.toArgb()
                         setShadowLayer(
-                            200f,
-                            0f,
-                            0f,
-                            shadowColor
+                            200f, 0f, 0f, shadowColor
                         )
                     },
                 )
@@ -176,31 +182,30 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 }
 
                 val textRadius = radius + 45f
-                val angleStep = 45f / (text.length )
-                val startAngle = -90f - ((angleStep * (text.length-1)) / 2)
+                val angleStep = 45f / (text.length)
+                val startAngle = -90f - ((angleStep * (text.length - 1)) / 2)
 
                 for (i in text.indices) {
-                    val angle = Math.toRadians(startAngle + (i * angleStep).toDouble())
+                    val angle =
+                        Math.toRadians(startAngle + (i * angleStep).toDouble())
 
                     val x = (circleCenter.x + textRadius * cos(angle)).toFloat()
                     val y = (circleCenter.y + textRadius * sin(angle)).toFloat()
 
                     // Save the canvas state
                     save()
-                    rotate((startAngle+ i * angleStep) + 90, x, y)
+                    rotate((startAngle + i * angleStep) + 90, x, y)
                     drawText(text[i].toString(), x, y, textPaint)
                     restore()
                 }
             }
         }
     }
-
+    OpenPrivacyDialog(viewModel, context, settings)
 }
 
 private fun handleDetector(
-    settings: State<SettingConfig>,
-    viewModel: HomeViewModel,
-    it: Activity
+    settings: State<SettingConfig>, viewModel: HomeViewModel, it: Activity
 ) {
     if (settings.value.active == ActiveButton.On) {
         viewModel.stopDetector(it)

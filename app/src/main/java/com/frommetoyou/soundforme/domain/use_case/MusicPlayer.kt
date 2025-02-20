@@ -8,18 +8,21 @@ import android.media.RingtoneManager
 import android.net.Uri
 import android.provider.Settings
 import androidx.core.net.toUri
+import com.frommetoyou.soundforme.domain.model.MusicItem
 import com.frommetoyou.soundforme.domain.model.SettingConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MusicPlayer(
     private val context: Context,
     private val settingsManager: SettingsManager
 ) {
     private var mediaPlayer: MediaPlayer? = null
-    private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private val audioManager =
+        context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private var previousVolume: Int = 0
 
     private var alarmUri: Uri? = null
@@ -31,7 +34,8 @@ class MusicPlayer(
             }
         }
     }
-    fun setAlarmUri(uri: Uri){
+
+    fun setAlarmUri(uri: Uri) {
         alarmUri = uri
     }
 
@@ -51,8 +55,19 @@ class MusicPlayer(
             0
         )
 
+        val file = alarmUri?.path?.let {
+            File(it)
+        }
+
+        if (file != null && file.exists()) {
+            alarmUri = MusicItem().uri.toUri()
+        }
+
         mediaPlayer = MediaPlayer().apply {
-            setDataSource(context, alarmUri ?: SettingConfig().musicItem.uri.toUri())
+            setDataSource(
+                context,
+                alarmUri ?: SettingConfig().musicItem.uri.toUri()
+            )
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_ALARM) // Ensures it plays as an alarm
@@ -75,7 +90,11 @@ class MusicPlayer(
         mediaPlayer = null
 
         // Restore previous volume
-        audioManager.setStreamVolume(AudioManager.STREAM_ALARM, previousVolume, 0)
+        audioManager.setStreamVolume(
+            AudioManager.STREAM_ALARM,
+            previousVolume,
+            0
+        )
 
     }
 }

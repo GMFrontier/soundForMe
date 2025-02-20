@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 android {
@@ -13,19 +15,32 @@ android {
         applicationId = "com.frommetoyou.soundforme"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
-
+        versionCode = 77
+        versionName = "2.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        signingConfigs {
+            create("release") {
+                storeFile = file("../keys/soundForMeAppKey.jks")
+                storePassword = "FirmaSoundForMe000FromMeToYou000"
+                keyAlias = "soundformeappkey"
+                keyPassword = "FirmaSoundForMe000FromMeToYou000"
+            }
+        }
         release {
             isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            applicationIdSuffix = ".free"
+            signingConfig = signingConfigs.getByName("release")
+        }
+        debug {
+            applicationIdSuffix = ".free"
         }
     }
     compileOptions {
@@ -43,6 +58,24 @@ android {
         noCompress  += "tflite"
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
+
+    androidComponents.onVariants { variant ->
+        if (variant.buildType == "release") {
+            afterEvaluate {
+                tasks.named("assemble${variant.name.capitalize()}").configure {
+                    doLast {
+                        val mappingFile = file("${layout.buildDirectory}/outputs/mapping/release/mapping.txt")
+                        val destDir = file("${rootDir}/mappings/${project.android.defaultConfig.versionName}")
+                        copy {
+                            from(mappingFile)
+                            into(destDir)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 dependencies {
@@ -72,6 +105,11 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.google.accompanist.permissions)
+    implementation(libs.google.app.update)
+    implementation(libs.google.app.update.ktx)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.play.services.ads)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
