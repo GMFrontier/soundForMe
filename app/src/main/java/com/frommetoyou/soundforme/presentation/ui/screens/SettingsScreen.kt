@@ -21,6 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -88,150 +90,164 @@ fun SettingScreen(modifier: Modifier = Modifier, navController: NavController) {
             .padding(top = 56.dp)
             .padding(horizontal = 16.dp)
     ) {
-        Text(
-            text = UiText.StringResource(R.string.settings_title).asString(
-                LocalContext.current
+
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = CardDefaults.cardColors().containerColor.copy(alpha = 0.5f) // Apply 50% transparency
             ),
-            fontSize = 25.sp,
-            fontWeight = FontWeight.Medium
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
         ) {
             Column(
-                modifier = Modifier.weight(1f)
-            ) {
+                modifier = Modifier.padding(16.dp),
+
+                ) {
+
                 Text(
-                    text = UiText.StringResource(R.string.whistle_or_clap)
-                        .asString(
-                            LocalContext.current
-                        ),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.ExtraBold
-                )
-                Text(
-                    text = UiText.StringResource(R.string.choose_mode).asString(
+                    text = UiText.StringResource(R.string.settings_title).asString(
                         LocalContext.current
                     ),
-                    fontSize = 14.sp,
-                    color = Color(0xFFB5B9BC)
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Medium
                 )
-            }
-            Button(
-                modifier = Modifier
-                    .height(32.dp)
-                    .weight(.3f),
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(
-                    horizontal = 16.dp,
-                    vertical = 4.dp
-                ),
-                onClick = {
+                Spacer(modifier = Modifier.height(32.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
+                        Text(
+                            text = UiText.StringResource(R.string.whistle_or_clap)
+                                .asString(
+                                    LocalContext.current
+                                ),
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                        Text(
+                            text = UiText.StringResource(R.string.choose_mode).asString(
+                                LocalContext.current
+                            ),
+                            fontSize = 13.sp,
+                            color = Color(0xFFB5B9BC)
+                        )
+                    }
+                    Button(
+                        modifier = Modifier
+                            .height(32.dp)
+                            .weight(.35f),
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = 16.dp,
+                            vertical = 4.dp
+                        ),
+                        onClick = {
+                            viewModel.saveSettings(
+                                settings = settings.value.copy(detectionMode = !settings.value.detectionMode)
+                            )
+                        }
+                    ) {
+                        Text(
+                            text = detectionMode.asString(LocalContext.current),
+                            fontSize = 14.sp
+                        )
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
+                SettingItem(
+                    text = LocalContext.current.getString(R.string.flash_mode),
+                    Modes.availableModes,
+                    selectedItem = settings.value.flashMode
+                ) { item ->
                     viewModel.saveSettings(
-                        settings = settings.value.copy(detectionMode = !settings.value.detectionMode)
+                        settings.value.copy(
+                            flashMode = item
+                        )
                     )
                 }
-            ) {
-                Text(
-                    text = detectionMode.asString(LocalContext.current),
-                    fontSize = 14.sp
-                )
-            }
-        }
-        Spacer(Modifier.height(8.dp))
-        SettingItem(
-            text = LocalContext.current.getString(R.string.flash_mode),
-            Modes.availableModes,
-            selectedItem = settings.value.flashMode
-        ) { item ->
-            viewModel.saveSettings(
-                settings.value.copy(
-                    flashMode = item
-                )
-            )
-        }
-        SettingItem(
-            text = LocalContext.current.getString(R.string.vibration_mode),
-            Modes.availableModes,
-            selectedItem = settings.value.vibrationMode
-        ) { item ->
-            viewModel.saveSettings(
-                settings.value.copy(
-                    vibrationMode = item
-                )
-            )
-        }
-        Spacer(Modifier.height(24.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = UiText.StringResource(R.string.select_audio).asString(
-                    LocalContext.current
-                ),
-                maxLines = 2,
-                modifier = Modifier.weight(1f)
-            )
+                SettingItem(
+                    text = LocalContext.current.getString(R.string.vibration_mode),
+                    Modes.availableModes,
+                    selectedItem = settings.value.vibrationMode
+                ) { item ->
+                    viewModel.saveSettings(
+                        settings.value.copy(
+                            vibrationMode = item
+                        )
+                    )
+                }
+                Spacer(Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = UiText.StringResource(R.string.select_audio).asString(
+                            LocalContext.current
+                        ),
+                        maxLines = 2,
+                        modifier = Modifier.weight(1f)
+                    )
 
-            val coroutineScope = rememberCoroutineScope()
-            Button(
-                enabled = rewardedAd != null,
-                modifier = Modifier
-                    .height(32.dp)
-                    .weight(.3f),
-                shape = RoundedCornerShape(12.dp),
-                contentPadding = PaddingValues(
-                    horizontal = 16.dp,
-                    vertical = 4.dp
-                ),
-                onClick = {
-                    viewModel.stopDetector(context = context)
-                    coroutineScope.launch {
-                        adsViewModel.showRewardedAd(context) {
-                            navController.navigate(MusicSelectionScreen)
+                    val coroutineScope = rememberCoroutineScope()
+                    Button(
+                        enabled = rewardedAd != null,
+                        modifier = Modifier
+                            .height(32.dp)
+                            .weight(.35f),
+                        shape = RoundedCornerShape(12.dp),
+                        contentPadding = PaddingValues(
+                            horizontal = 16.dp,
+                            vertical = 4.dp
+                        ),
+                        onClick = {
+                            viewModel.stopDetector(context = context)
+                            coroutineScope.launch {
+                                adsViewModel.showRewardedAd(context) {
+                                    navController.navigate(MusicSelectionScreen)
+                                }
+                            }
+                        }
+                    ) {
+                        Box(
+                            modifier = Modifier,
+                        ) {
+                            if (rewardedAd == null)
+
+                                CircularProgressIndicator(
+                                    modifier = Modifier
+                                        .width(24.dp)
+                                        .align(Alignment.Center),
+                                    color = MaterialTheme.colorScheme.secondary,
+                                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                                )
+                            Text(
+                                text = UiText.StringResource(R.string.seleccionar)
+                                    .asString(
+                                        LocalContext.current
+                                    ), fontSize = 14.sp
+                            )
                         }
                     }
                 }
-            ) {
-                Box(
-                    modifier = Modifier,
-                ) {
-                    if (rewardedAd == null)
 
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .width(24.dp)
-                                .align(Alignment.Center),
-                            color = MaterialTheme.colorScheme.secondary,
-                            trackColor = MaterialTheme.colorScheme.surfaceVariant,
+
+                Text(
+                    text = "${
+                        UiText.StringResource(R.string.current_audio).asString(
+                            LocalContext.current
                         )
-                    Text(
-                        text = UiText.StringResource(R.string.seleccionar)
-                            .asString(
-                                LocalContext.current
-                            ), fontSize = 14.sp
-                    )
-                }
+                    } ${
+                        settings.value.musicItem.uri.split("/")[settings.value.musicItem.uri.split(
+                            "/"
+                        ).size - 1]
+                    }",
+                    fontSize = 13.sp,
+                    color = Color(0xFFB5B9BC)
+                )
             }
         }
-
-        Text(
-            text = "${
-                UiText.StringResource(R.string.current_audio).asString(
-                    LocalContext.current
-                )
-            } ${
-                settings.value.musicItem.uri.split("/")[settings.value.musicItem.uri.split(
-                    "/"
-                ).size - 1]
-            }",
-            fontSize = 14.sp,
-            color = Color(0xFFB5B9BC)
-        )
 
         Column(
             modifier = Modifier

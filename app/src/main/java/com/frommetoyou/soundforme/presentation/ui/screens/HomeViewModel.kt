@@ -4,24 +4,18 @@ import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.provider.MediaStore
-import android.provider.MediaStore.Audio.Media
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.core.net.toUri
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.frommetoyou.soundforme.domain.model.ActiveButton
-import com.frommetoyou.soundforme.domain.use_case.AudioClassifierUseCase
-import com.frommetoyou.soundforme.domain.use_case.MusicPlayer
-import com.frommetoyou.soundforme.domain.use_case.SettingsManager
-import com.frommetoyou.soundforme.domain.model.Classification
 import com.frommetoyou.soundforme.domain.model.MusicItem
 import com.frommetoyou.soundforme.domain.model.SettingConfig
 import com.frommetoyou.soundforme.domain.use_case.DetectorService
 import com.frommetoyou.soundforme.domain.use_case.DetectorService.Actions
+import com.frommetoyou.soundforme.domain.use_case.SettingsManager
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,10 +23,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalPermissionsApi::class)
 class HomeViewModel(
     private val settingsManager: SettingsManager,
 ) : ViewModel() {
     private var contentResolver: ContentResolver? = null
+
+    val visiblePermissionDialogQueue = mutableStateListOf<String>()
 
     private val _musicList = MutableStateFlow(listOf<MusicItem>())
     val musicList: StateFlow<List<MusicItem>> = _musicList
@@ -46,12 +43,25 @@ class HomeViewModel(
     private val _openPrivacyPolicy = MutableStateFlow(false)
     val openPrivacyPolicy: StateFlow<Boolean> = _openPrivacyPolicy
 
+    private lateinit var micPermissionState: PermissionState
+
     init {
         CoroutineScope(Dispatchers.IO).launch {
             settingsManager.getSettings().collectLatest {
                 _settings.value = it
             }
         }
+    }
+
+    fun onPermissionResult(
+        permission: String,
+        isGranted: Boolean
+    ) {
+        if (!isGranted) visiblePermissionDialogQueue.add(0, permission)
+    }
+
+    fun dismissDialog() {
+        visiblePermissionDialogQueue.removeLast()
     }
 
     fun setMusicPermission() {
@@ -110,10 +120,15 @@ class HomeViewModel(
 
     fun startDetector(context: Context) {
         viewModelScope.launch {
-            if(settings.value.isPrivacyAccepted.not()){
+            if (settings.value.isPrivacyAccepted.not()) {
                 _openPrivacyPolicy.value = true
                 return@launch
             }
+            if (micPermissionState.status.isGranted.not()) {
+                micPermissionState.launchPermissionRequest()
+                return@launch
+            }
+
             saveSettings(
                 settings.value.copy(
                     active = ActiveButton.On
@@ -140,5 +155,9 @@ class HomeViewModel(
 
     fun setOpenPrivacyPolicy(b: Boolean) {
         _openPrivacyPolicy.value = b
+    }
+
+    fun setPermissionState(permissionState: PermissionState) {
+        micPermissionState = permissionState
     }
 }

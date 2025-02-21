@@ -33,7 +33,9 @@ import com.frommetoyou.soundforme.presentation.ui.AppBottomNavigation
 import com.frommetoyou.soundforme.presentation.ui.CentralNavigation
 import com.frommetoyou.soundforme.presentation.ui.SoundForMeApp
 import com.frommetoyou.soundforme.presentation.ui.TopAppBar
+import com.frommetoyou.soundforme.presentation.ui.util.getAdvertisingId
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
@@ -43,8 +45,10 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.BuildConfig
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 
 
 class MainActivity : ComponentActivity() {

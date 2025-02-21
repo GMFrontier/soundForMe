@@ -4,6 +4,8 @@ import android.Manifest.permission.RECORD_AUDIO
 import android.app.Activity
 import android.graphics.Paint
 import android.graphics.Typeface
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -70,9 +72,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     val recordPermissionState =
         rememberPermissionState(permission = RECORD_AUDIO) { isGranted ->
             if (isGranted) handleDetector(settings, viewModel, activity!!)
+            else viewModel.stopDetector(context)
         }
 
-    var activeMode = settings.value.active
+    viewModel.setPermissionState(recordPermissionState)
+
+    val activeMode = settings.value.active
 
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
@@ -133,12 +138,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     )
                     if (distance <= radius) {
                         activity?.let {
-
-                            if (recordPermissionState.status.isGranted) {
-                                handleDetector(settings, viewModel, it)
-                            } else {
-                                recordPermissionState.launchPermissionRequest()
-                            }
+                            handleDetector(settings, viewModel, it)
                         }
                     }
                 }

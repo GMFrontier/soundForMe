@@ -51,8 +51,7 @@ fun TopAppBar(navController: NavController) {
     if (topBarState.value)
         CenterAlignedTopAppBar(
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                titleContentColor = MaterialTheme.colorScheme.primary,
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
             ),
             title = {
                 Text(

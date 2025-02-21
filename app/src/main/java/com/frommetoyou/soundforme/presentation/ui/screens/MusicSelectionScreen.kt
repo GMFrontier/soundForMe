@@ -67,7 +67,6 @@ import com.frommetoyou.soundforme.presentation.ui.util.findAndroidActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.android.gms.ads.rewarded.RewardedAd
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
