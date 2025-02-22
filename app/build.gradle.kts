@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,13 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
+}
+
+val properties = Properties().apply {
+    val propertiesFile = file("$rootDir/local.properties")
+    if (propertiesFile.exists()) {
+        propertiesFile.inputStream().use { load(it) }
+    }
 }
 
 android {
@@ -15,7 +24,7 @@ android {
         applicationId = "com.frommetoyou.soundforme"
         minSdk = 24
         targetSdk = 35
-        versionCode = 77
+        versionCode = 76
         versionName = "2.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -23,15 +32,15 @@ android {
     buildTypes {
         signingConfigs {
             create("release") {
-                storeFile = file("../keys/soundForMeAppKey.jks")
-                storePassword = "FirmaSoundForMe000FromMeToYou000"
-                keyAlias = "soundformeappkey"
-                keyPassword = "FirmaSoundForMe000FromMeToYou000"
+                storeFile = file(properties["STORE_FILE"] as String)
+                storePassword = properties["STORE_PASSWORD"] as String
+                keyAlias = properties["KEY_ALIAS"] as String
+                keyPassword = properties["KEY_PASSWORD"] as String
             }
         }
         release {
-            isMinifyEnabled = false
-            isShrinkResources = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -110,6 +119,7 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
     implementation(libs.play.services.ads)
+    implementation(libs.core.splashscreen)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

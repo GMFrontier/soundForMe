@@ -3,6 +3,7 @@ package com.frommetoyou.soundforme.presentation.ui.screens
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.provider.MediaStore
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
@@ -20,6 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -43,7 +45,11 @@ class HomeViewModel(
     private val _openPrivacyPolicy = MutableStateFlow(false)
     val openPrivacyPolicy: StateFlow<Boolean> = _openPrivacyPolicy
 
+    private val _permissionEvent = MutableStateFlow<Event>(Event.Idle)
+    val permissionEvent: StateFlow<Event> = _permissionEvent.asStateFlow()
+
     private lateinit var micPermissionState: PermissionState
+    private lateinit var notificationPermissionState: PermissionState
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
@@ -57,11 +63,13 @@ class HomeViewModel(
         permission: String,
         isGranted: Boolean
     ) {
-        if (!isGranted) visiblePermissionDialogQueue.add(0, permission)
+        if (!isGranted && !visiblePermissionDialogQueue.contains(permission)) visiblePermissionDialogQueue.add(
+            permission
+        )
     }
 
     fun dismissDialog() {
-        visiblePermissionDialogQueue.removeLast()
+        visiblePermissionDialogQueue.removeAt(0)
     }
 
     fun setMusicPermission() {
@@ -124,10 +132,16 @@ class HomeViewModel(
                 _openPrivacyPolicy.value = true
                 return@launch
             }
+
             if (micPermissionState.status.isGranted.not()) {
-                micPermissionState.launchPermissionRequest()
+                _permissionEvent.value = Event.PermissionRequest
                 return@launch
             }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                if (notificationPermissionState.status.isGranted.not()) {
+                    _permissionEvent.value = Event.PermissionRequest
+                    return@launch
+                }
 
             saveSettings(
                 settings.value.copy(
@@ -159,5 +173,14 @@ class HomeViewModel(
 
     fun setPermissionState(permissionState: PermissionState) {
         micPermissionState = permissionState
+    }
+
+    fun setNotifPermissionState(permissionState: PermissionState) {
+        notificationPermissionState = permissionState
+    }
+
+    sealed class Event {
+        object Idle : Event()
+        object PermissionRequest : Event()
     }
 }

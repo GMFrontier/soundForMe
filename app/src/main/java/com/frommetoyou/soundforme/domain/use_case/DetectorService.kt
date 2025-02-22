@@ -5,6 +5,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Build
 import android.os.IBinder
@@ -174,7 +175,7 @@ class DetectorService : Service() {
                 val cameraManager =
                     context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
                 val cameraId =
-                    cameraManager.cameraIdList.firstOrNull() ?: return
+                    getCameraWithFlash(context) ?: return
                 cameraManager.setTorchMode(cameraId, true)
             }
             Modes.Intermittent -> {
@@ -205,7 +206,7 @@ class DetectorService : Service() {
     private fun startFlashing(context: Context) {
         val cameraManager =
             context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        val cameraId = cameraManager.cameraIdList.firstOrNull() ?: return
+        val cameraId = getCameraWithFlash(context) ?: return
 
         flashJob?.cancel()
 
@@ -222,7 +223,7 @@ class DetectorService : Service() {
     private fun stopFlashing(context: Context) {
         val cameraManager =
             context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
-        val cameraId = cameraManager.cameraIdList.firstOrNull() ?: return
+        val cameraId = getCameraWithFlash(context) ?: return
 
         flashJob?.cancel()
         cameraManager.setTorchMode(cameraId, false)
@@ -269,6 +270,14 @@ class DetectorService : Service() {
 
                 delay(1000)
             }
+        }
+    }
+
+    private fun getCameraWithFlash(context: Context): String? {
+        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        return cameraManager.cameraIdList.firstOrNull { cameraId ->
+            cameraManager.getCameraCharacteristics(cameraId)
+                .get(CameraCharacteristics.FLASH_INFO_AVAILABLE) == true
         }
     }
 

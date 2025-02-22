@@ -11,8 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.frommetoyou.soundforme.R
+import com.frommetoyou.soundforme.presentation.ui.util.UiText
 
 @Composable
 fun PrivacyDialog(
@@ -60,7 +63,8 @@ fun PrivacyDialog(
                     onConfirmation()
                 }
             ) {
-                Text("Confirm")
+                Text(UiText.StringResource(R.string.confirm).asString(
+                    LocalContext.current))
             }
         },
         dismissButton = {
@@ -69,7 +73,8 @@ fun PrivacyDialog(
                     onDismissRequest()
                 }
             ) {
-                Text("Dismiss")
+                Text(UiText.StringResource(R.string.decline).asString(
+                    LocalContext.current))
             }
         }
     )

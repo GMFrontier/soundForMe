@@ -30,4 +30,13 @@
     <string name="privacy_1">Para el funcionamiento de esta aplicación se necesita confirmar que usted está conforme con las políticas de privacidad</string>
     <string name="read_privacy">Ir a las Políticas de Privacidad</string>
     <string name="detector_off">Desactivado</string>
+    <string name="grant_permission">Dar permiso</string>
+    <string name="ok">Ok</string>
+    <string name="permissions_required">Permiso requerido</string>
+    <string name="record_permanently_declined">Parece que has rechazado permanentemente el permiso para grabar audio. Puedes ir a la configuración de la aplicación para concederlo.</string>
+    <string name="ask_record_permission">Esta app necesita el permiso de grabar audio para permitirte encontrar tu teléfono a través de oir los silbidos o aplausos que hagas</string>
+    <string name="notification_permanently_declined">Parece que has rechazado permanentemente el permiso para notificaciones. Puedes ir a la configuración de la aplicación para concederlo</string>
+    <string name="ask_notification_permission">Esta app necesita el permiso de notificaciones para poder mantenerse en funcionamiento aunque apagues la pantalla y dejes el dispositivo lejos</string>
+    <string name="confirm">Aceptar</string>
+    <string name="decline">Rechazar</string>
 </resources>

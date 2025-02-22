@@ -29,4 +29,13 @@
     <string name="privacy_1">For this application to function properly, you need to confirm that you agree with the privacy policies</string>
     <string name="read_privacy">Go to Privacy Policy</string>
     <string name="detector_off">Inactive</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="ok">Ok</string>
+    <string name="permissions_required">Permission required</string>
+    <string name="record_permanently_declined">It seems that you have permanently declined record audio permission. You can go to the app settings to grant it.</string>
+    <string name="ask_record_permission">This app needs acces to record audio so you can start to find your phone listening to your whistles or claps</string>
+    <string name="notification_permanently_declined">It seems that you have permanently declined notification permission. You can go to the app settings to grant it</string>
+    <string name="ask_notification_permission">This app requires notification permission to remain functional even if you turn off the screen and leave the device far away</string>
+    <string name="confirm">Accept</string>
+    <string name="decline">Decline</string>
 </resources>

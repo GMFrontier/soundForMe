@@ -1,9 +1,14 @@
 package com.frommetoyou.soundforme.presentation.ui.screens
 
+import android.Manifest.permission.POST_NOTIFICATIONS
 import android.Manifest.permission.RECORD_AUDIO
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Canvas
@@ -44,10 +49,12 @@ import androidx.compose.ui.unit.dp
 import com.frommetoyou.soundforme.R
 import com.frommetoyou.soundforme.domain.model.ActiveButton
 import com.frommetoyou.soundforme.domain.model.SettingConfig
+import com.frommetoyou.soundforme.presentation.ui.dialogs.NotificationPermissionTextProvider
+import com.frommetoyou.soundforme.presentation.ui.dialogs.PermissionDialog
+import com.frommetoyou.soundforme.presentation.ui.dialogs.RecordPermissionTextProvider
 import com.frommetoyou.soundforme.presentation.ui.util.UiText
 import com.frommetoyou.soundforme.presentation.ui.util.findAndroidActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.cos
@@ -61,6 +68,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     val viewModel = koinViewModel<HomeViewModel>()
     val adsViewModel = koinViewModel<AdsViewModel>()
     val settings = viewModel.settings.collectAsState()
+    val dialogQueue = viewModel.visiblePermissionDialogQueue
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -69,13 +77,48 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
     val activity = LocalContext.current.findAndroidActivity()
 
+    val permissionsToRequest =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(RECORD_AUDIO, POST_NOTIFICATIONS)
+        } else {
+            arrayOf(RECORD_AUDIO)
+        }
+
     val recordPermissionState =
         rememberPermissionState(permission = RECORD_AUDIO) { isGranted ->
             if (isGranted) handleDetector(settings, viewModel, activity!!)
             else viewModel.stopDetector(context)
         }
+    val notificationPermissionState =
+        rememberPermissionState(permission = POST_NOTIFICATIONS) { isGranted ->
+            if (isGranted) handleDetector(settings, viewModel, activity!!)
+            else viewModel.stopDetector(context)
+        }
 
     viewModel.setPermissionState(recordPermissionState)
+    viewModel.setNotifPermissionState(notificationPermissionState)
+    val permissionEvent = viewModel.permissionEvent.collectAsState().value
+
+    val multiplePermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions(),
+        onResult = { perms ->
+            permissionsToRequest.forEach { permission ->
+                viewModel.onPermissionResult(
+                    permission = permission,
+                    isGranted = perms[permission] == true
+                )
+            }
+        }
+    )
+
+    LaunchedEffect(permissionEvent) {
+        when (permissionEvent) {
+            is HomeViewModel.Event.PermissionRequest -> {
+                multiplePermissionResultLauncher.launch(permissionsToRequest)
+            }
+            else -> {  }
+        }
+    }
 
     val activeMode = settings.value.active
 
@@ -85,7 +128,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
     var radius by remember {
         mutableFloatStateOf(0f)
     }
-    val modeText = if(settings.value.active == ActiveButton.Off) {
+    val modeText = if (settings.value.active == ActiveButton.Off) {
         UiText.StringResource(
             R.string.detector_off
         ).asString(LocalContext.current)
@@ -201,7 +244,36 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             }
         }
     }
+    dialogQueue
+        .reversed()
+        .forEach { permission ->
+            PermissionDialog(
+                permissionTextProvider = when (permission) {
+                    RECORD_AUDIO -> RecordPermissionTextProvider()
+                    POST_NOTIFICATIONS -> NotificationPermissionTextProvider()
+                    else -> return@forEach
+                },
+                isPermanentlyDenied = activity?.shouldShowRequestPermissionRationale(
+                    permission
+                ) ?: true,
+                onDismiss = viewModel::dismissDialog,
+                onOkClick = {
+                    viewModel.dismissDialog()
+                    multiplePermissionResultLauncher.launch(arrayOf(permission))
+                },
+                onGoToAppSettingsClick = {
+                    activity?.openAppSettings()
+                }
+            )
+        }
     OpenPrivacyDialog(viewModel, context, settings)
+}
+
+private fun Activity.openAppSettings() {
+    Intent(
+        Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+        Uri.fromParts("package", packageName, null)
+    ).also(::startActivity)
 }
 
 private fun handleDetector(

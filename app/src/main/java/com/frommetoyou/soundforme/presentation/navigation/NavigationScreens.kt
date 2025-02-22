@@ -1,11 +1,8 @@
-package com.frommetoyou.soundforme.presentation.ui
+package com.frommetoyou.soundforme.presentation.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.frommetoyou.soundforme.presentation.navigation.HomeScreen
-import com.frommetoyou.soundforme.presentation.navigation.MusicSelectionScreen
-import com.frommetoyou.soundforme.presentation.navigation.SettingsScreen
 import com.frommetoyou.soundforme.presentation.ui.screens.HomeScreen
 import com.frommetoyou.soundforme.presentation.ui.screens.MusicSelectionScreen
 import com.frommetoyou.soundforme.presentation.ui.screens.SettingScreen
