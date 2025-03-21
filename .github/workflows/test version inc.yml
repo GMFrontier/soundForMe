@@ -17,6 +17,10 @@ jobs:
           
           echo "VERSION_CODE=32" >> $GITHUB_ENV
  
+
+          gh variable set VERSION_CODE --body "32"
+          gh variable list
+
         env:
           GH_TOKEN: ${{ secrets.PAT }}
           VERSION_CODE: ${{ vars.VERSION_CODE}}
