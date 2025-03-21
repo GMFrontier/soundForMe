@@ -15,7 +15,8 @@ jobs:
           echo "Incremented VERSION_CODE: $VERSION_CODE"
           echo "Incremented VERSION_NAME: $VERSION_NAME"
           echo "Incremented OLD_MINOR_VERSION: $OLD_MINOR_VERSION"
-          echo "VERSION_CODE=$((VERSION_CODE+1))" >> $GITHUB_ENV
+          gh variable set VERSION_CODE --body "$((VERSION_CODE+1))"
+
  
         env:
           VERSION_CODE: ${{ vars.VERSION_CODE}}
