@@ -4,16 +4,15 @@ on:
   workflow_dispatch: # Esto permite disparar el workflow manualmente desde la UI
 
 jobs:
-  comment:
+  set_variables:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: |
-          gh variable list
           gh variable set VERSION_CODE --body "$((VERSION_CODE+1))"
-          gh variable list
+          gh variable set VERSION_NAME_3 --body "$((VERSION_NAME_3+1))"
           
         env:
           GH_TOKEN: '${{ secrets.PAT }}'
           VERSION_CODE: '${{ vars.VERSION_CODE}}'
-          VERSION_NAME: '${{ vars.VERSION_NAME }}'
+          VERSION_NAME_3: '${{ vars.VERSION_NAME_3 }}'
