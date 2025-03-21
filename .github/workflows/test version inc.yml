@@ -11,16 +11,13 @@ jobs:
       - name: Increment VERSION_CODE and VERSION_NAME
         run: |   
           echo "Incremented ASD: $((VERSION_CODE +1))"
-          
-          NEW_VERSION_CODE = $((VERSION_CODE +1))
-          OLD_MINOR_VERSION=$(echo $VERSION_NAME | awk -F'.' '{print $3}')
-          NEW_MINOR_VERSION=$(( OLD_MINOR_VERSION + 1 ))
-          NEW_VERSION_NAME="2.0.${NEW_MINOR_VERSION}"
+          VERSION_CODE = $((VERSION_CODE +1))
 
-
-          echo "Incremented VERSION_CODE: $NEW_VERSION_CODE"
-          echo "Incremented VERSION_NAME: $NEW_VERSION_NAME"
+          echo "Incremented VERSION_CODE: $VERSION_CODE"
+          echo "Incremented VERSION_NAME: $VERSION_NAME"
+          echo "Incremented OLD_MINOR_VERSION: $OLD_MINOR_VERSION"
  
         env:
           VERSION_CODE: ${{ vars.VERSION_CODE }}
           VERSION_NAME: ${{ vars.VERSION_NAME }}
+          OLD_MINOR_VERSION: $(echo $VERSION_NAME | awk -F'.' '{print $3}')
