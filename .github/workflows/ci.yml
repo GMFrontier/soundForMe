@@ -27,7 +27,7 @@ jobs:
         with:
           gradlePath: app/build.gradle.kts
           versionCode: $VERSION_CODE
-          versionName: '2.0.${{VERSION_NAME_3}}'
+          versionName: '2.0.$VERSION_NAME_3'
         env:
           VERSION_CODE: '${{ vars.VERSION_CODE }}'
           VERSION_NAME_3: '${{ vars.VERSION_NAME_3 }}'
