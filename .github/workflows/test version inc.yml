@@ -1,0 +1,35 @@
+name: Test Version Increment
+
+on:
+  workflow_dispatch: # Esto permite disparar el workflow manualmente desde la UI
+
+jobs:
+  version-increment:
+    name: Increment Version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set default VERSION_CODE and VERSION_NAME
+        run: |
+          # Definir valores de VERSION_CODE y VERSION_NAME como variables de entorno
+          VERSION_CODE=84
+          VERSION_NAME="2.0.5"
+          echo "VERSION_CODE=$VERSION_CODE" >> $GITHUB_ENV
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+
+      - name: Increment VERSION_CODE and VERSION_NAME
+        run: |
+          # Incrementar VERSION_CODE
+          NEW_VERSION_CODE=$(( $VERSION_CODE + 1 ))
+          
+          # Incrementar el último dígito de VERSION_NAME
+          OLD_MINOR_VERSION=$(echo $VERSION_NAME | awk -F'.' '{print $3}')
+          NEW_MINOR_VERSION=$(( OLD_MINOR_VERSION + 1 ))
+          NEW_VERSION_NAME="2.0.${NEW_MINOR_VERSION}"
+
+          # Imprimir los resultados
+          echo "Incremented VERSION_CODE: $NEW_VERSION_CODE"
+          echo "Incremented VERSION_NAME: $NEW_VERSION_NAME"
+          
+          # Exportar las nuevas variables para usarlas en pasos siguientes si es necesario
+          echo "NEW_VERSION_CODE=$NEW_VERSION_CODE" >> $GITHUB_ENV
+          echo "NEW_VERSION_NAME=$NEW_VERSION_NAME" >> $GITHUB_ENV
