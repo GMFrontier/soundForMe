@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.konan.properties.saveToFile
-import java.io.FileOutputStream
 import java.util.Properties
 
 plugins {
@@ -17,13 +15,13 @@ val properties = Properties().apply {
         propertiesFile.inputStream().use { load(it) }
     }
 }
-
+/*
 val version = Properties().apply {
     val propertiesFile = file("$rootDir/version.properties")
     if (propertiesFile.exists()) {
         propertiesFile.inputStream().use { load(it) }
     }
-}
+}*/
 
 android {
     namespace = "com.frommetoyou.soundforme"
@@ -33,20 +31,24 @@ android {
         applicationId = "com.frommetoyou.soundforme"
         minSdk = 24
         targetSdk = 35
-        versionCode = (version["VERSION_CODE"].toString().toInt())
-        versionName = (version["VERSION_NAME"] as String)
+       /* versionCode = (version["VERSION_CODE"].toString().toInt())
+        versionName = (version["VERSION_NAME"] as String)*/
+
+        versionCode = 85
+        versionName = "2.0.5"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        signingConfigs {
+        /*signingConfigs {
             create("release") {
                 storeFile = file(properties["STORE_FILE"] as String)
                 storePassword = properties["STORE_PASSWORD"] as String
                 keyAlias = properties["KEY_ALIAS"] as String
                 keyPassword = properties["KEY_PASSWORD"] as String
             }
-        }
+        }*/
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -55,7 +57,7 @@ android {
                 "proguard-rules.pro"
             )
             applicationIdSuffix = ".free"
-            signingConfig = signingConfigs.getByName("release")
+            //signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".free"
@@ -77,7 +79,6 @@ android {
         noCompress  += "tflite"
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
-
     androidComponents.onVariants { variant ->
         if (variant.buildType == "release") {
             afterEvaluate {
@@ -95,7 +96,7 @@ android {
         }
     }
 
-    tasks.register("incrementVersion") {
+    /*tasks.register("incrementVersion") {
         doLast {
             val versionFile = file("$rootDir/version.properties")
 
@@ -115,7 +116,7 @@ android {
 
             println("Updated versionCode to $newVersionCode and versionName to $newVersionName")
         }
-    }
+    }*/
 }
 
 dependencies {
