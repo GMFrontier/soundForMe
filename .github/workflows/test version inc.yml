@@ -15,7 +15,7 @@ jobs:
           echo "Incremented VERSION_CODE: $VERSION_CODE"
           echo "Incremented VERSION_NAME: $VERSION_NAME"
           
-          echo "VERSION_CODE=${{VERSION_CODE+1}}" >> $GITHUB_ENV
+          echo "VERSION_CODE=32" >> $GITHUB_ENV
  
         env:
           VERSION_CODE: ${{ vars.VERSION_CODE}}
