@@ -14,7 +14,6 @@ jobs:
 
           echo "Incremented VERSION_CODE: $VERSION_CODE"
           echo "Incremented VERSION_NAME: $VERSION_NAME"
-          echo "Incremented OLD_MINOR_VERSION: $OLD_MINOR_VERSION"
           gh variable set VERSION_CODE --body "$((VERSION_CODE+1))"
 
  
