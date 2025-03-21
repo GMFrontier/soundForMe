@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - name: Increment VERSION_CODE and VERSION_NAME
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
         run: |   
           echo "Incremented ASD: $((VERSION_CODE))" 
 
