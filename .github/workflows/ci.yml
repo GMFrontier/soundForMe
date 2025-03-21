@@ -43,7 +43,7 @@ jobs:
           keyStorePassword: '${{ secrets.STORE_PASSWORD }}'
           keyPassword: '${{ secrets.KEY_PASSWORD }}'
       - name: Upload app bundle as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-bundle
           path: app/build/outputs/bundle/release/app-release.aab
