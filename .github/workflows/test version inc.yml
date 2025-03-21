@@ -4,25 +4,17 @@ on:
   workflow_dispatch: # Esto permite disparar el workflow manualmente desde la UI
 
 jobs:
-  version-increment:
-    name: Increment Version
+comment:
     runs-on: ubuntu-latest
-    steps: 
-      - name: Increment VERSION_CODE and VERSION_NAME
-        uses: actions/checkout@v4
-        run: |   
-          echo "Incremented ASD: $((VERSION_CODE))" 
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+            gh variable list
+            gh variable set TEST_VAR --body "Set from workflow"
+            gh variable list
 
-          echo "Incremented VERSION_CODE: $VERSION_CODE"
-          echo "Incremented VERSION_NAME: $VERSION_NAME"
-          
-          echo "VERSION_CODE=32" >> $GITHUB_ENV
- 
-
-          gh variable set VERSION_CODE --body "32"
-          gh variable list
-
+            
         env:
           GH_TOKEN: ${{ secrets.PAT }}
           VERSION_CODE: ${{ vars.VERSION_CODE}}
-          VERSION_NAME: ${{ vars.VERSION_NAME }}
+          VERSION_NAME: ${{ vars.VERSION_NAME }} 
