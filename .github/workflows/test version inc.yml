@@ -14,10 +14,9 @@ jobs:
 
           echo "Incremented VERSION_CODE: $VERSION_CODE"
           echo "Incremented VERSION_NAME: $VERSION_NAME"
-          gh variable set VERSION_CODE --body "$((VERSION_CODE+1))"
-
+          
+          echo "VERSION_CODE=${{VERSION_CODE+1}}" >> $GITHUB_ENV
  
         env:
-          GH_TOKEN: ${{ github.token }}
           VERSION_CODE: ${{ vars.VERSION_CODE}}
-          VERSION_NAME: ${{ vars.VERSION_NAME }} 
+          VERSION_NAME: ${{ vars.VERSION_NAME }}
