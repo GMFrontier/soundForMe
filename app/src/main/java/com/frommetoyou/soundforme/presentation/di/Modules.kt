@@ -33,7 +33,7 @@ val modules = module {
     single {
         DetectorService()
     }
-    single {
+    viewModel {
         HomeViewModel(get())
     }
     single {

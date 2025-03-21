@@ -46,9 +46,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.withRotation
 import com.frommetoyou.soundforme.R
 import com.frommetoyou.soundforme.domain.model.ActiveButton
 import com.frommetoyou.soundforme.domain.model.SettingConfig
+import com.frommetoyou.soundforme.presentation.ui.composables.NativeAdContent
+import com.frommetoyou.soundforme.presentation.ui.composables.NativeAdViewHelper
 import com.frommetoyou.soundforme.presentation.ui.dialogs.NotificationPermissionTextProvider
 import com.frommetoyou.soundforme.presentation.ui.dialogs.PermissionDialog
 import com.frommetoyou.soundforme.presentation.ui.dialogs.RecordPermissionTextProvider
@@ -66,14 +69,14 @@ import kotlin.math.sqrt
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
     val viewModel = koinViewModel<HomeViewModel>()
-    val adsViewModel = koinViewModel<AdsViewModel>()
     val settings = viewModel.settings.collectAsState()
     val dialogQueue = viewModel.visiblePermissionDialogQueue
+    val adsViewModel = koinViewModel<AdsViewModel>()
+
+    val nativeAd by adsViewModel.nativeAd.collectAsState()
+    val ownsPremium by adsViewModel.userOwnsPremium.collectAsState()
 
     val context = LocalContext.current
-    LaunchedEffect(Unit) {
-        adsViewModel.loadRewardedAd(context)
-    }
 
     val activity = LocalContext.current.findAndroidActivity()
 
@@ -116,7 +119,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             is HomeViewModel.Event.PermissionRequest -> {
                 multiplePermissionResultLauncher.launch(permissionsToRequest)
             }
-            else -> {  }
+
+            else -> {}
         }
     }
 
@@ -157,6 +161,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             },
         contentScale = ContentScale.None,
     )
+
     val screenDimensions = LocalConfiguration.current
     val activeColor =
         if (activeMode == ActiveButton.On) Color(0xFFFFFFFF) else MaterialTheme.colorScheme.error
@@ -166,13 +171,29 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         if (activeMode == ActiveButton.On) MaterialTheme.colorScheme.primary.toArgb() else MaterialTheme.colorScheme.error.toArgb()
     val icon = rememberVectorPainter(
         image = ImageVector.vectorResource(R.drawable.on_off),
-
-        )
+    )
+    val premiumIcon = rememberVectorPainter(
+        image = ImageVector.vectorResource(R.drawable.ic_crown),
+    )
     Box(modifier = Modifier.fillMaxSize()) {
+
+
+        if (ownsPremium == false) {
+            nativeAd?.let {
+                NativeAdViewHelper(
+                    ad = it,
+                    horizontalPadding = 16.dp
+                ) { ad, view ->
+                    NativeAdContent(ad, view)
+                }
+            }
+        }
+
         Canvas(modifier = Modifier
             .fillMaxSize()
 
             .pointerInput(true) {
+
                 detectTapGestures {
                     val distance = sqrt(
                         (it.x - circleCenter.x).pow(2) + (it.y - circleCenter.y).pow(
@@ -217,6 +238,24 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                         )
                     }
                 }
+
+                if (ownsPremium == true) {
+                    with(premiumIcon) {
+                        translate(
+                            left = circleCenter.x * 5 / 3,
+                            top = circleCenter.y - iconSize.height * 2.6f
+                        ) {
+                            withRotation(
+                                degrees = 45f
+                            ) {
+                                draw(
+                                    size = iconSize,
+                                )
+                            }
+                        }
+                    }
+                }
+
                 val text = modeText
                 val textPaint = Paint().apply {
                     color = Color.White.toArgb()
@@ -235,7 +274,6 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                     val x = (circleCenter.x + textRadius * cos(angle)).toFloat()
                     val y = (circleCenter.y + textRadius * sin(angle)).toFloat()
 
-                    // Save the canvas state
                     save()
                     rotate((startAngle + i * angleStep) + 90, x, y)
                     drawText(text[i].toString(), x, y, textPaint)
@@ -266,6 +304,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
                 }
             )
         }
+
     OpenPrivacyDialog(viewModel, context, settings)
 }
 

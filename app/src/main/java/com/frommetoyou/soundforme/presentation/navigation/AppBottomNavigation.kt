@@ -79,13 +79,14 @@ fun AppBottomNavigation(navController: NavController) {
                     label = { Text(screen.name.asString(LocalContext.current)) },
                     selected = isSelected,
                     onClick = {
-                        navController.navigate(screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
+                        if (isSelected.not())
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
                     }
                 )
             }

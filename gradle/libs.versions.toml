@@ -26,6 +26,9 @@ googleFirebaseCrashlytics = "3.0.3"
 firebaseAnalytics = "22.2.0"
 playServicesAds = "23.6.0"
 splashScreen = "1.0.0"
+coil = "3.1.0"
+billing = "7.1.1"
+constraintlayout = "2.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -70,6 +73,13 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "playServicesAds" }
 
 core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashScreen" }
+
+coil-kt = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
+coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
+
+android-billing = { group = "com.android.billingclient", name = "billing", version.ref = "billing" }
+android-billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

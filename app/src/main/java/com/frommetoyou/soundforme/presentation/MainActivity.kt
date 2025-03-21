@@ -20,6 +20,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.LayoutDirection
@@ -27,11 +28,13 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.AppTheme
-import com.frommetoyou.soundforme.presentation.navigation.HomeScreen
+import com.frommetoyou.soundforme.BuildConfig
 import com.frommetoyou.soundforme.presentation.navigation.AppBottomNavigation
 import com.frommetoyou.soundforme.presentation.navigation.CentralNavigation
-import com.frommetoyou.soundforme.presentation.ui.SoundForMeApp
 import com.frommetoyou.soundforme.presentation.navigation.TopAppBar
+import com.frommetoyou.soundforme.presentation.ui.SoundForMeApp
+import com.frommetoyou.soundforme.presentation.ui.screens.AdsViewModel
+import com.frommetoyou.soundforme.presentation.ui.screens.HomeViewModel
 import com.google.android.gms.ads.MobileAds
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -43,7 +46,12 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
+import org.koin.java.KoinJavaComponent
 
 
 class MainActivity : ComponentActivity() {
@@ -57,13 +65,29 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        installSplashScreen().apply {
+        val viewModel: AdsViewModel = KoinJavaComponent.getKoin().get()
+        viewModel.startBillingConnection(this)
+        val splashScreen = installSplashScreen().apply {
             setKeepOnScreenCondition {
-                false
+                true
+            }
+        }
+
+        lifecycleScope.launch {
+            val ownsPremium = viewModel.userOwnsPremium.filterNotNull().first()
+            if (ownsPremium.not())
+                viewModel.loadNativeAd(this@MainActivity)
+            delay(1000)
+            splashScreen.setKeepOnScreenCondition {
+                ownsPremium == null
             }
         }
 
         firebaseAnalytics = Firebase.analytics
+
+        if (BuildConfig.DEBUG) {
+            Firebase.analytics.setAnalyticsCollectionEnabled(false)
+        }
 
         appUpdateManager = AppUpdateManagerFactory.create(applicationContext)
 

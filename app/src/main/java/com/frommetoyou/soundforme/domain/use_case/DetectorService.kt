@@ -12,7 +12,6 @@ import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.frommetoyou.soundforme.R
@@ -101,6 +100,10 @@ class DetectorService : Service() {
             }
         }
 
+        updateNotification()
+    }
+
+    private fun updateNotification() {
         val serviceIntent = Intent(this, DetectorService::class.java).apply {
             action = Actions.STOP.toString()
         }
@@ -128,6 +131,7 @@ class DetectorService : Service() {
             .setContentTitle(this.getString(R.string.detection_active))
             .setContentText("${this.getString(R.string.detection_mode)} ${settings?.detectionMode}")
             .setContentIntent(mainPendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .addAction(
                 R.drawable.ic_launcher_foreground,
                 UiText.StringResource(R.string.stop)
@@ -136,16 +140,6 @@ class DetectorService : Service() {
             )
             .build()
         startForeground(1, notification)
-    }
-
-    private fun updateNotification() {
-        val notification = NotificationCompat.Builder(
-            this, "Detector"
-        ).setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle(this.getString(R.string.detection_active))
-            .setContentText("${this.getString(R.string.detection_mode)} ${settings?.detectionMode}")
-            .build()
-        startForeground(1, notification)  // Update the notification
     }
 
     override fun onDestroy() {

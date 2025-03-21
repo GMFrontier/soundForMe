@@ -13,7 +13,7 @@
     <string name="claps">Claps</string>
     <string name="settings_title">Customize Your Settings!</string>
     <string name="whistle_or_clap">Whistle or Clap?</string>
-    <string name="choose_mode">Choose the sound you want to use</string>
+    <string name="choose_mode">Choose the sound you want SoundForMe to detect</string>
     <string name="home_mode">%1$s</string>
     <string name="select_audio">Select the audio you want to reproduce</string>
     <string name="seleccionar">Select</string>
@@ -38,4 +38,20 @@
     <string name="ask_notification_permission">This app requires notification permission to remain functional even if you turn off the screen and leave the device far away</string>
     <string name="confirm">Accept</string>
     <string name="decline">Decline</string>
+    <string name="music_ad_id">ca-app-pub-9206493690157601/3925441759</string>
+    <string name="music_ad_id_test">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="native_ad_id">ca-app-pub-9206493690157601/9163362540</string>
+    <string name="native_ad_id_test">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="buy_premium">Get rid of ads and help the dev!</string>
+    <string name="im_the_best">I know im the best</string>
+    <string name="thank_you_1">Thank you very much!</string>
+    <string name="thank_you_2">From now on, you will enjoy the app without ads. You will also be shown a badge to remind you of your value in this app</string>
+    <string name="ad">Ad</string>
+    <string name="cats">Cats</string>
+    <string name="dogs">Dogs</string>
+    <string name="animal">Animals</string>
+    <string name="babycry">Baby cry</string>
+    <string name="coughs">Coughs</string>
+    <string name="dishes">Dishes</string>
+    <string name="laughter">Laughter</string>
 </resources>

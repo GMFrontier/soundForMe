@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.saveToFile
+import java.io.FileOutputStream
 import java.util.Properties
 
 plugins {
@@ -16,6 +18,13 @@ val properties = Properties().apply {
     }
 }
 
+val version = Properties().apply {
+    val propertiesFile = file("$rootDir/version.properties")
+    if (propertiesFile.exists()) {
+        propertiesFile.inputStream().use { load(it) }
+    }
+}
+
 android {
     namespace = "com.frommetoyou.soundforme"
     compileSdk = 35
@@ -24,8 +33,8 @@ android {
         applicationId = "com.frommetoyou.soundforme"
         minSdk = 24
         targetSdk = 35
-        versionCode = 76
-        versionName = "2.0.0"
+        versionCode = (version["VERSION_CODE"].toString().toInt())
+        versionName = (version["VERSION_NAME"] as String)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -61,6 +70,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     aaptOptions {
@@ -85,6 +95,27 @@ android {
         }
     }
 
+    tasks.register("incrementVersion") {
+        doLast {
+            val versionFile = file("$rootDir/version.properties")
+
+            val newVersionCode = version["VERSION_CODE"].toString().toInt() + 1
+
+            val versionParts = version["VERSION_NAME"].toString().split(".").toMutableList()
+            if (versionParts.size == 3) {
+                val lastNumber = versionParts[2].toInt() + 1
+                versionParts[2] = lastNumber.toString()
+            }
+
+            val newVersionName = versionParts.joinToString(".")
+
+            version["VERSION_CODE"] = newVersionCode.toString()
+            version["VERSION_NAME"] = newVersionName
+            version.store(FileOutputStream(versionFile), null)
+
+            println("Updated versionCode to $newVersionCode and versionName to $newVersionName")
+        }
+    }
 }
 
 dependencies {
@@ -120,6 +151,11 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.play.services.ads)
     implementation(libs.core.splashscreen)
+    implementation(libs.coil.kt)
+    implementation(libs.coil.okhttp)
+    implementation(libs.android.billing)
+    implementation(libs.android.billing.ktx)
+    implementation(libs.androidx.constraintlayout)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -128,4 +164,5 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(kotlin("reflect"))
 }

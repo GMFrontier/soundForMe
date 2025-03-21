@@ -1,6 +1,7 @@
 package com.frommetoyou.soundforme.domain.use_case
 
 import android.media.AudioRecord
+import android.util.Log
 import com.frommetoyou.soundforme.domain.model.Classification
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -16,8 +17,38 @@ class AudioClassifierUseCase(
     private val classificationMap = mapOf(
         "Whistling" to Classification.Whistle,
         "Whistle" to Classification.Whistle,
+
         "Clap" to Classification.Clap,
         "Clapping" to Classification.Clap,
+
+        "Animal" to Classification.Animal,
+        "Domestic animals" to Classification.Animal,
+        "Wild animals" to Classification.Animal,
+        "pets" to Classification.Animal,
+
+        "Purr" to Classification.Cat,
+        "Cat" to Classification.Cat,
+
+        "Dog" to Classification.Dog,
+        "Bark" to Classification.Dog,
+        "Bow-wow" to Classification.Dog,
+
+        "silverware" to Classification.Dishes,
+        "Dishes" to Classification.Dishes,
+
+        "Crying" to Classification.BabyCry,
+        "Baby cry" to Classification.BabyCry,
+        "Baby cry" to Classification.BabyCry,
+        "infant cry" to Classification.BabyCry,
+
+        "Cough" to Classification.Cough,
+        "Throat clearing" to Classification.Cough,
+
+        "Laughter" to Classification.Laughter,
+        "Belly laugh" to Classification.Laughter,
+        "Belly laugh" to Classification.Laughter,
+        "Baby laughter" to Classification.Laughter,
+        "Snicker" to Classification.Laughter,
     )
 
     private var probabilityThreshold: Float = 0.3f
@@ -46,6 +77,7 @@ class AudioClassifierUseCase(
                     val action = filteredModelOutput
                         .asSequence()
                         .mapNotNull { item ->
+
                             classificationMap.entries.find {
                                 it.key.equals(item.label, ignoreCase = true)
                             }?.value

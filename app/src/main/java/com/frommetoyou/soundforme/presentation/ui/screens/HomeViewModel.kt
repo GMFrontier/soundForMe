@@ -127,6 +127,7 @@ class HomeViewModel(
     }
 
     fun startDetector(context: Context) {
+
         viewModelScope.launch {
             if (settings.value.isPrivacyAccepted.not()) {
                 _openPrivacyPolicy.value = true

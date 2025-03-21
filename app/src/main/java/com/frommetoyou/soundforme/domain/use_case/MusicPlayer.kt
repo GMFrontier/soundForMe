@@ -59,7 +59,7 @@ class MusicPlayer(
             File(it)
         }
 
-        if (file != null && file.exists()) {
+        if (file == null || file.exists().not()) {
             alarmUri = MusicItem().uri.toUri()
         }
 

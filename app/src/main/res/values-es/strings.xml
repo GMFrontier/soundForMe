@@ -14,7 +14,7 @@
     <string name="claps">Aplausos</string>
     <string name="settings_title">¡Personaliza tu Configuración!</string>
     <string name="whistle_or_clap">¿Silbido o aplauso?</string>
-    <string name="choose_mode">Elige el sonido que deseas usar</string>
+    <string name="choose_mode">Elige el sonido que deseas que SoundForMe detecte</string>
     <string name="home_mode">Modo: %1$s</string>
     <string name="select_audio">Selecciona el audio que deseas reproducir</string>
     <string name="seleccionar">Seleccionar</string>
@@ -39,4 +39,20 @@
     <string name="ask_notification_permission">Esta app necesita el permiso de notificaciones para poder mantenerse en funcionamiento aunque apagues la pantalla y dejes el dispositivo lejos</string>
     <string name="confirm">Aceptar</string>
     <string name="decline">Rechazar</string>
+    <string name="music_ad_id">ca-app-pub-9206493690157601/3925441759</string>
+    <string name="music_ad_id_test">ca-app-pub-3940256099942544/5224354917</string>
+    <string name="native_ad_id">ca-app-pub-9206493690157601/9163362540</string>
+    <string name="native_ad_id_test">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="buy_premium">¡Saca los anuncios y ayuda al desarrollador!</string>
+    <string name="im_the_best">Ya sé que soy el mejor</string>
+    <string name="thank_you_1">¡Muchísimas gracias!</string>
+    <string name="thank_you_2">A partir de ahora disfrutarás de la app sin anuncios. Se te mostrará además una medalla para recordar tu valía en esta app</string>
+    <string name="ad">Anuncio</string>
+    <string name="cats">Gatos</string>
+    <string name="dogs">Perros</string>
+    <string name="animal">Animales</string>
+    <string name="babycry">Llanto bebé</string>
+    <string name="coughs">Toses</string>
+    <string name="dishes">Platos</string>
+    <string name="laughter">Risas</string>
 </resources>
