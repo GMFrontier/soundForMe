@@ -26,8 +26,11 @@ jobs:
         uses: chkfung/android-version-actions@v1.2.1
         with:
           gradlePath: app/build.gradle.kts
-          versionCode: '${{ github.run_number }}'
-          versionName: 1.0.0
+          versionCode: $VERSION_CODE
+          versionName: '2.0.${{VERSION_NAME_3}}'
+        env:
+          VERSION_CODE: '${{ vars.VERSION_CODE }}'
+          VERSION_NAME_3: '${{ vars.VERSION_NAME_3 }}'
       - name: Build prodRelease
         run: ./gradlew bundleRelease
       - name: Sign AAb
@@ -35,10 +38,10 @@ jobs:
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: app/build/outputs/bundle/release
-          signingKeyBase64: '${{ secrets.KEYSTORE }}'
-          alias: '${{ secrets.SIGNING_KEY_ALIAS }}'
-          keyStorePassword: '${{ secrets.SIGNING_STORE_PASSWORD }}'
-          keyPassword: '${{ secrets.SIGNING_KEY_PASSWORD }}'
+          signingKeyBase64: '${{ secrets.STORE_FILE }}'
+          alias: '${{ secrets.KEY_ALIAS }}'
+          keyStorePassword: '${{ secrets.STORE_PASSWORD }}'
+          keyPassword: '${{ secrets.KEY_PASSWORD }}'
       - name: Upload app bundle as artifact
         uses: actions/upload-artifact@v2
         with:
@@ -60,4 +63,17 @@ jobs:
           serviceAccountJsonPlainText: '${{ secrets.SERVICE_ACCOUNT_JSON }}'
           packageName: com.uxstate.countriespad
           releaseFiles: '${{ github.workspace }}/app-release.aab'
-          track: production
+          track: internal
+  set_variables:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          gh variable set VERSION_CODE --body "$((VERSION_CODE+1))"
+          gh variable set VERSION_NAME_3 --body "$((VERSION_NAME_3+1))"
+          
+        env:
+          GH_TOKEN: '${{ secrets.PAT }}'
+          VERSION_CODE: '${{ vars.VERSION_CODE}}'
+          VERSION_NAME_3: '${{ vars.VERSION_NAME_3 }}'
