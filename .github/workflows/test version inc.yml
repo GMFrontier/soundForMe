@@ -10,6 +10,7 @@ jobs:
     steps: 
       - name: Increment VERSION_CODE and VERSION_NAME
         run: |   
-          ASD = $(( vars.VERSION_CODE ))
-          echo "Incremented ASD: $ASD"
+          echo "Incremented ASD: $GH_TOKEN"
  
+        env:
+          GH_TOKEN: ${{ vars.VERSION_CODE }}
