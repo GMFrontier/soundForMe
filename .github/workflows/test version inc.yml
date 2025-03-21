@@ -19,6 +19,6 @@ jobs:
 
  
         env:
+          GH_TOKEN: ${{ github.token }}
           VERSION_CODE: ${{ vars.VERSION_CODE}}
-          VERSION_NAME: ${{ vars.VERSION_NAME }}
-          OLD_MINOR_VERSION: $(echo $VERSION_NAME | awk -F'.' '{print $3}')
+          VERSION_NAME: ${{ vars.VERSION_NAME }} 
