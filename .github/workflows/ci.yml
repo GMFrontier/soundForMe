@@ -15,7 +15,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '11'
-          distribution: 'adoptopenjdk'
       - name: Make gradlew executable
         run: chmod +x ./gradlew
       - name: Setup Gradle Cache
