@@ -31,9 +31,6 @@ android {
         applicationId = "com.frommetoyou.soundforme"
         minSdk = 24
         targetSdk = 35
-       /* versionCode = (version["VERSION_CODE"].toString().toInt())
-        versionName = (version["VERSION_NAME"] as String)*/
-
         versionCode = 85
         versionName = "2.0.5"
 
@@ -41,14 +38,7 @@ android {
     }
 
     buildTypes {
-        /*signingConfigs {
-            create("release") {
-                storeFile = file(properties["STORE_FILE"] as String)
-                storePassword = properties["STORE_PASSWORD"] as String
-                keyAlias = properties["KEY_ALIAS"] as String
-                keyPassword = properties["KEY_PASSWORD"] as String
-            }
-        }*/
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -57,7 +47,6 @@ android {
                 "proguard-rules.pro"
             )
             applicationIdSuffix = ".free"
-            //signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".free"
@@ -95,28 +84,6 @@ android {
             }
         }
     }
-
-    /*tasks.register("incrementVersion") {
-        doLast {
-            val versionFile = file("$rootDir/version.properties")
-
-            val newVersionCode = version["VERSION_CODE"].toString().toInt() + 1
-
-            val versionParts = version["VERSION_NAME"].toString().split(".").toMutableList()
-            if (versionParts.size == 3) {
-                val lastNumber = versionParts[2].toInt() + 1
-                versionParts[2] = lastNumber.toString()
-            }
-
-            val newVersionName = versionParts.joinToString(".")
-
-            version["VERSION_CODE"] = newVersionCode.toString()
-            version["VERSION_NAME"] = newVersionName
-            version.store(FileOutputStream(versionFile), null)
-
-            println("Updated versionCode to $newVersionCode and versionName to $newVersionName")
-        }
-    }*/
 }
 
 dependencies {
