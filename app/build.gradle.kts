@@ -31,6 +31,9 @@ android {
         applicationId = "com.frommetoyou.soundforme"
         minSdk = 24
         targetSdk = 35
+       /* versionCode = (version["VERSION_CODE"].toString().toInt())
+        versionName = (version["VERSION_NAME"] as String)*/
+
         versionCode = 85
         versionName = "2.0.5"
 
@@ -38,7 +41,6 @@ android {
     }
 
     buildTypes {
-
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -47,6 +49,7 @@ android {
                 "proguard-rules.pro"
             )
             applicationIdSuffix = ".free"
+            //signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".free"
@@ -84,6 +87,7 @@ android {
             }
         }
     }
+
 }
 
 dependencies {
@@ -102,8 +106,6 @@ dependencies {
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.task.audio)
     implementation(libs.androidx.datastore)
-//    implementation(libs.tensorflow.lite.support)
-//    implementation(libs.tensorflow.lite.task.vision)
     api(libs.koin.core)
     implementation(libs.koin.compose)
     implementation(libs.koin.compose.viewmodel)
