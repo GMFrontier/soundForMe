@@ -22,15 +22,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           gradle-home-cache-cleanup: true
-      - name: Bump Version Code
-        uses: chkfung/android-version-actions@v1.2.1
-        with:
-          gradlePath: app/build.gradle.kts
-          versionCode: '$((VERSION_CODE))'
-          versionName: '2.0.$((VERSION_NAME_3))'
-        env:
-          VERSION_CODE: '${{ vars.VERSION_CODE }}'
-          VERSION_NAME_3: '${{ vars.VERSION_NAME_3 }}'
       - name: Build prodRelease
         run: ./gradlew bundleRelease
       - name: Sign AAb
