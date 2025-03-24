@@ -79,7 +79,7 @@ class MainActivity : ComponentActivity() {
                 viewModel.loadNativeAd(this@MainActivity)
             delay(1000)
             splashScreen.setKeepOnScreenCondition {
-                ownsPremium == null
+                false
             }
         }
 

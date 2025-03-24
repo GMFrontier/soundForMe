@@ -56,25 +56,26 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
         buildConfig = true
     }
 
-    aaptOptions {
+    androidResources {
         noCompress  += "tflite"
         ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
+
     androidComponents.onVariants { variant ->
         if (variant.buildType == "release") {
             afterEvaluate {
-                tasks.named("assemble${variant.name.capitalize()}").configure {
+                tasks.named("assemble${variant.name.replaceFirstChar { it.uppercaseChar() }}").configure {
                     doLast {
                         val mappingFile = file("${layout.buildDirectory}/outputs/mapping/release/mapping.txt")
                         val destDir = file("${rootDir}/mappings/${project.android.defaultConfig.versionName}")

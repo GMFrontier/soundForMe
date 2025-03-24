@@ -29,6 +29,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
@@ -36,6 +37,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -140,11 +142,10 @@ fun MusicSelectionScreen(
             ) {
                 Column {
                     SearchBar(
-                        query = searchQuery,
-                        onQueryChange = { searchQuery = it },
-                        onSearch = { focusedSearch = false },
-                        active = focusedSearch,
-                        onActiveChange = { focusedSearch = it },
+                        expanded = focusedSearch,
+                        onExpandedChange = {
+                            focusedSearch = it
+                        },
 
                         modifier = modifier
                             .padding(
@@ -153,28 +154,32 @@ fun MusicSelectionScreen(
                                 bottom = 12.dp
                             )
                             .fillMaxWidth(),
-
-                        placeholder = { Text("Search") },
-
-                        leadingIcon = {
-                            androidx.compose.material3.Icon(
-                                imageVector = Icons.Rounded.Search,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        inputField = {
+                            TextField(
+                                value = searchQuery,
+                                onValueChange = { searchQuery = it },
+                                placeholder = { Text("Search") },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Search,
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                },
+                                trailingIcon = {
+                                    if (focusedSearch)
+                                        Icon(
+                                            imageVector = Icons.Rounded.Close,
+                                            contentDescription = null,
+                                            modifier = Modifier.pointerInput(true) {
+                                                detectTapGestures {
+                                                    searchQuery = ""
+                                                    focusedSearch = false
+                                                }
+                                            }
+                                        )
+                                }
                             )
-                        },
-                        trailingIcon = {
-                            if (focusedSearch)
-                                androidx.compose.material3.Icon(
-                                    imageVector = Icons.Rounded.Close,
-                                    contentDescription = null,
-                                    modifier = Modifier.pointerInput(true) {
-                                        detectTapGestures {
-                                            searchQuery = ""
-                                            focusedSearch = false
-                                        }
-                                    }
-                                )
                         },
                         colors = SearchBarDefaults.colors(
                             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
