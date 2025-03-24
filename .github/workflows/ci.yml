@@ -21,7 +21,8 @@ jobs:
       - name: Setup Gradle Cache
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: "8.10.2"
+          gradle-version: current
+          gradle-home-cache-cleanup: true         
       - name: Load Google Service file
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES }}
