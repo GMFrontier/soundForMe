@@ -1,4 +1,4 @@
-name: FGM/CICD
+name: SoundForMe Deploy
 'on':
   workflow_dispatch: null
 jobs:
@@ -31,8 +31,7 @@ jobs:
         uses: chkfung/android-version-actions@v1.2.3
         with:
           gradlePath: app/build.gradle.kts
-          versionCode: '$(( VERSION_CODE ))'
-          versionName: "2.0.$(( $VERSION_NAME_3 ))"
+          versionCode: "$(( VERSION_CODE ))"
         env:
           VERSION_CODE: '${{ vars.VERSION_CODE}}'
           VERSION_NAME_3: '${{ vars.VERSION_NAME_3 }}'
