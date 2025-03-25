@@ -30,12 +30,12 @@ jobs:
       - name: Update Android Version Name
         # You may pin to the exact commit or the version.
         # uses: caffeine-soft/android-version-name-updater@f3710410aac539c0dbc5feac403dacc82ac67cb2
-        uses: caffeine-soft/android-version-name-updater@v1.0.4
+        uses: Francisco-G-Montero/android-version-name-updater@v1
         with:
           # The name of the Android project directory containing the build.gradle file
-          project_name: 1.0.0
+          project_name: 'app'
           # The new version of the Android project to set in the build.gradle file
-          project_version: 33
+          project_version: '1.0.0'
           # GitHub token for authentication
           github_token: ${{ secrets.PAT }}
       - name: Build prodRelease
