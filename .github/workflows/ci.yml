@@ -27,15 +27,17 @@ jobs:
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES }}
         run: echo $DATA | base64 -di > app/google-services.json
-      - name: Bump Version Code
-        uses: chkfung/android-version-actions@v1.2.3
+      - name: Update Android Version Name
+        # You may pin to the exact commit or the version.
+        # uses: caffeine-soft/android-version-name-updater@f3710410aac539c0dbc5feac403dacc82ac67cb2
+        uses: caffeine-soft/android-version-name-updater@v1.0.4
         with:
-          gradlePath: app/build.gradle.kts
-          versionCode: '${{ github.run_number }}'
-          versionName: 1.0.0
-        env:
-          VERSION_CODE: '${{ vars.VERSION_CODE}}'
-          VERSION_NAME_3: '${{ vars.VERSION_NAME_3 }}'
+          # The name of the Android project directory containing the build.gradle file
+          project_name: 1.0.0
+          # The new version of the Android project to set in the build.gradle file
+          project_version: 33
+          # GitHub token for authentication
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build prodRelease
         run: ./gradlew bundleRelease
       - name: Sign AAb
