@@ -37,7 +37,7 @@ jobs:
           # The new version of the Android project to set in the build.gradle file
           project_version: 33
           # GitHub token for authentication
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
       - name: Build prodRelease
         run: ./gradlew bundleRelease
       - name: Sign AAb
