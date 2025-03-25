@@ -1,4 +1,4 @@
-name: Deploy Countries Pad
+name: FGM/CICD
 'on':
   workflow_dispatch: null
 jobs:
