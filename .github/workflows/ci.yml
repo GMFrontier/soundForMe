@@ -30,7 +30,7 @@ jobs:
       - name: Update Android Version Name
         # You may pin to the exact commit or the version.
         # uses: caffeine-soft/android-version-name-updater@f3710410aac539c0dbc5feac403dacc82ac67cb2
-        uses: Francisco-G-Montero/android-version-name-updater@v1.0.4
+        uses: caffeine-soft/android-version-name-updater@v1.0.4
         with:
           # The name of the Android project directory containing the build.gradle file
           project_name: 'app'
