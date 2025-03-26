@@ -35,7 +35,7 @@ android {
         minSdk = 24
         targetSdk = 35
         versionCode = 85
-        versionName = "2.0.6"
+        versionName = (version["VERSION_NAME"] as String) ?: "2.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -116,8 +116,12 @@ android {
 
             println("Updated versionCode to $newVersionCode and versionName to $newVersionName")
         }
-    }
 
+
+        tasks.named("publishBundle") {
+            dependsOn("incrementVersion")
+        }
+    }
 }
 
 play{
