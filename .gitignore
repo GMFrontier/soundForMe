@@ -18,3 +18,4 @@ local.properties
 ./app/src/main/java/com/frommetoyou/soundforme/domain/use_case/DetectorService.kt
 ./keys
 ./app/google-services.json
+key.properties
