@@ -45,4 +45,6 @@ jobs:
           base64 -d -i play_config.json.b64 > app/publish/pc-api-8834478387068594456-862-5ce7d6e080ae.json 
 
       - name: Distribute app # publicar app en el open track (seteado en gradle kts)
-        run: ./gradlew :androidApp:bundleRelease :androidApp:publishBundle
+        run: |
+          chmod +x gradlew
+          ./gradlew :androidApp:bundleRelease :androidApp:publishBundle
