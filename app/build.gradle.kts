@@ -1,3 +1,6 @@
+import com.github.triplet.gradle.androidpublisher.ReleaseStatus
+import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
+import java.io.FileOutputStream
 import java.util.Properties
 
 plugins {
@@ -7,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.google.firebase.crashlytics)
+    alias(libs.plugins.triplet.play)
 }
 
 val properties = Properties().apply {
@@ -15,13 +19,12 @@ val properties = Properties().apply {
         propertiesFile.inputStream().use { load(it) }
     }
 }
-/*
 val version = Properties().apply {
     val propertiesFile = file("$rootDir/version.properties")
     if (propertiesFile.exists()) {
         propertiesFile.inputStream().use { load(it) }
     }
-}*/
+}
 
 android {
     namespace = "com.frommetoyou.soundforme"
@@ -31,16 +34,20 @@ android {
         applicationId = "com.frommetoyou.soundforme"
         minSdk = 24
         targetSdk = 35
-       /* versionCode = (version["VERSION_CODE"].toString().toInt())
-        versionName = (version["VERSION_NAME"] as String)*/
-
         versionCode = 85
-        versionName = "2.0.5"
-
+        versionName = "2.0.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        signingConfigs {
+            create("release") {
+                storeFile = file(properties["STORE_FILE"] as String)
+                storePassword = properties["STORE_PASSWORD"] as String
+                keyAlias = properties["KEY_ALIAS"] as String
+                keyPassword = properties["KEY_PASSWORD"] as String
+            }
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -49,7 +56,7 @@ android {
                 "proguard-rules.pro"
             )
             applicationIdSuffix = ".free"
-            //signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".free"
@@ -89,6 +96,36 @@ android {
         }
     }
 
+    tasks.register("incrementVersion") {
+        doLast {
+            val versionFile = file("$rootDir/version.properties")
+
+            val newVersionCode = version["VERSION_CODE"].toString().toInt() + 1
+
+            val versionParts = version["VERSION_NAME"].toString().split(".").toMutableList()
+            if (versionParts.size == 3) {
+                val lastNumber = versionParts[2].toInt() + 1
+                versionParts[2] = lastNumber.toString()
+            }
+
+            val newVersionName = versionParts.joinToString(".")
+
+            version["VERSION_CODE"] = newVersionCode.toString()
+            version["VERSION_NAME"] = newVersionName
+            version.store(FileOutputStream(versionFile), null)
+
+            println("Updated versionCode to $newVersionCode and versionName to $newVersionName")
+        }
+    }
+
+}
+
+play{
+    serviceAccountCredentials = file("${projectDir}/publish/pc-api-8834478387068594456-862-5ce7d6e080ae.json")
+    track.set("internal")
+    releaseStatus.set(ReleaseStatus.DRAFT)
+    resolutionStrategy.set(ResolutionStrategy.AUTO)
+    defaultToAppBundles.set(true)
 }
 
 dependencies {
