@@ -14,7 +14,7 @@ plugins {
 }
 
 val properties = Properties().apply {
-    val propertiesFile = file("$rootDir/local.properties")
+    val propertiesFile = file("$rootDir/key.properties")
     if (propertiesFile.exists()) {
         propertiesFile.inputStream().use { load(it) }
     }
@@ -35,7 +35,7 @@ android {
         minSdk = 24
         targetSdk = 35
         versionCode = 85
-        versionName = (version["VERSION_NAME"] as String) ?: "2.0.0"
+        versionName = (version["VERSION_NAME"] as String)
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -75,57 +75,58 @@ android {
     }
 
     androidResources {
-        noCompress  += "tflite"
-        ignoreAssetsPattern = "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
+        noCompress += "tflite"
+        ignoreAssetsPattern =
+            "!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~"
     }
 
     androidComponents.onVariants { variant ->
         if (variant.buildType == "release") {
             afterEvaluate {
-                tasks.named("assemble${variant.name.replaceFirstChar { it.uppercaseChar() }}").configure {
-                    doLast {
-                        val mappingFile = file("${layout.buildDirectory}/outputs/mapping/release/mapping.txt")
-                        val destDir = file("${rootDir}/mappings/${project.android.defaultConfig.versionName}")
-                        copy {
-                            from(mappingFile)
-                            into(destDir)
+                tasks.named("assemble${variant.name.replaceFirstChar { it.uppercaseChar() }}")
+                    .configure {
+                        doLast {
+                            val mappingFile =
+                                file("${layout.buildDirectory}/outputs/mapping/release/mapping.txt")
+                            val destDir =
+                                file("${rootDir}/mappings/${project.android.defaultConfig.versionName}")
+                            copy {
+                                from(mappingFile)
+                                into(destDir)
+                            }
                         }
                     }
-                }
             }
-        }
-    }
-
-    tasks.register("incrementVersion") {
-        doLast {
-            val versionFile = file("$rootDir/version.properties")
-
-            val newVersionCode = version["VERSION_CODE"].toString().toInt() + 1
-
-            val versionParts = version["VERSION_NAME"].toString().split(".").toMutableList()
-            if (versionParts.size == 3) {
-                val lastNumber = versionParts[2].toInt() + 1
-                versionParts[2] = lastNumber.toString()
-            }
-
-            val newVersionName = versionParts.joinToString(".")
-
-            version["VERSION_CODE"] = newVersionCode.toString()
-            version["VERSION_NAME"] = newVersionName
-            version.store(FileOutputStream(versionFile), null)
-
-            println("Updated versionCode to $newVersionCode and versionName to $newVersionName")
-        }
-
-
-        tasks.named("publishBundle") {
-            dependsOn("incrementVersion")
         }
     }
 }
 
-play{
-    serviceAccountCredentials = file("${projectDir}/publish/pc-api-8834478387068594456-862-5ce7d6e080ae.json")
+tasks.register("incrementVersion") {
+    doLast {
+        val versionFile = file("$rootDir/version.properties")
+
+        val newVersionCode = version["VERSION_CODE"].toString().toInt() + 1
+
+        val versionParts =
+            version["VERSION_NAME"].toString().split(".").toMutableList()
+        if (versionParts.size == 3) {
+            val lastNumber = versionParts[2].toInt() + 1
+            versionParts[2] = lastNumber.toString()
+        }
+
+        val newVersionName = versionParts.joinToString(".")
+
+        version["VERSION_CODE"] = newVersionCode.toString()
+        version["VERSION_NAME"] = newVersionName
+        version.store(FileOutputStream(versionFile), null)
+
+        println("Updated versionCode to $newVersionCode and versionName to $newVersionName")
+    }
+}
+
+play {
+    serviceAccountCredentials =
+        file("${projectDir}/publish/pc-api-8834478387068594456-862-5ce7d6e080ae.json")
     track.set("internal")
     releaseStatus.set(ReleaseStatus.DRAFT)
     resolutionStrategy.set(ResolutionStrategy.AUTO)
