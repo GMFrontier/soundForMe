@@ -32,6 +32,7 @@ jobs:
           echo '${{ secrets.STORE_FILE }}'> soundForMeAppKey.jks.asc.b64
           base64 -d -i soundForMeAppKey.jks.asc.b64 > soundForMeAppKey.jks.asc 
           cat soundForMeAppKey.jks.asc
+          ls
           gpg -d --passphrase '${{ secrets.KEYSTORE_PASSPHRASE }}' --batch soundForMeAppKey.jks.asc > keys/soundForMeAppKey.jks
           echo "storeFile=release.keystore" >> keystore.properties
           echo "keyAlias=$KEY_ALIAS" >> keystore.properties
