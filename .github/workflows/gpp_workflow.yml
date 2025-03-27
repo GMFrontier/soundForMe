@@ -25,7 +25,7 @@ jobs:
         with:
           gradle-version: "8.10.2"
           gradle-home-cache-cleanup: true
-          #cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+          cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
 
       - name: Configure Keystore # generar el ketsore file y preparar app signing
         run: |
@@ -45,6 +45,10 @@ jobs:
           mkdir -p app/publish
           echo '${{ secrets.PLAY_CONFIG_JSON }}' > play_config.json.b64
           base64 -d -i play_config.json.b64 > app/publish/pc-api-8834478387068594456-862-5ce7d6e080ae.json 
+      - name: Setup google-services.json
+        env:
+          DATA: ${{ secrets.GOOGLE_SERVICES }}
+        run: echo $DATA | base64 -di > app/google-services.json
       - name: Increment App Version
         run: gradle incrementVersion
       - name: Distribute app # publicar app en el open track (seteado en gradle kts)
