@@ -2,8 +2,7 @@ name: SoundForMe Deploy
 
 'on':
   workflow_dispatch: null
-#- name: Make gradlew executable
-#        run: chmod +x ./gradlew
+
 jobs:
   build:
     name: Job 1 - Build Signed AAB
@@ -66,7 +65,7 @@ jobs:
           github_token: ${{ secrets.PAT }}
           branch: ${{ github.ref }}
         
-     # - name: Distribute app # publicar app en el open track (seteado en gradle kts)
-     #   run: gradle bundleRelease publishBundle
+      - name: Distribute app # publicar app en el open track (seteado en gradle kts)
+        run: gradle bundleRelease publishBundle
       
         
