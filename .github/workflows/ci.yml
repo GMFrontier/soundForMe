@@ -1,4 +1,4 @@
-name: SoundForMe Deploy
+name: SoundForMe Deploy Old
 'on':
   workflow_dispatch: null
 jobs:
