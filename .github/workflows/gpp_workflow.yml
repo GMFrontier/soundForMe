@@ -5,7 +5,7 @@ name: SoundForMe Deploy
 
 jobs:
   deploy:
-    name: Job 1 - Build Signed AAB
+    name: Setup, build, deploy and push
     runs-on: ubuntu-latest
     permissions:                # Job-level permissions configuration starts here
       contents: write           # 'write' access to repository contents
