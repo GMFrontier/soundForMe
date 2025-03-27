@@ -4,7 +4,7 @@ name: SoundForMe Deploy
   workflow_dispatch: null
 
 jobs:
-  build:
+  deploy:
     name: Job 1 - Build Signed AAB
     runs-on: ubuntu-latest
     permissions:                # Job-level permissions configuration starts here
@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4 # obtener repo
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
       - name: Set up JDK 17 # setup java 17
         uses: actions/setup-java@v4
@@ -52,7 +52,7 @@ jobs:
         run: echo $DATA | base64 -di > app/google-services.json
       - name: Increment App Version
         run: gradle incrementVersion
-        
+
       - name: Commit incrementVersion changes 
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
