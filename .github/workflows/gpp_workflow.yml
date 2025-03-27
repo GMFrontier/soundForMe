@@ -1,4 +1,4 @@
-name: Android Alpha Release
+name: SoundForMe Deploy
 
 'on':
   workflow_dispatch: null
@@ -8,6 +8,9 @@ jobs:
   build:
     name: Job 1 - Build Signed AAB
     runs-on: ubuntu-latest
+    permissions:                # Job-level permissions configuration starts here
+      contents: write           # 'write' access to repository contents
+      pull-requests: write      # 'write' access to pull requests
     steps:
       - uses: actions/checkout@v4 # obtener repo
         with:
@@ -19,7 +22,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
      
-      
       - name: Setup Gradle Cache # setup gradle
         uses: gradle/actions/setup-gradle@v4
         with:
@@ -51,5 +53,20 @@ jobs:
         run: echo $DATA | base64 -di > app/google-services.json
       - name: Increment App Version
         run: gradle incrementVersion
-      - name: Distribute app # publicar app en el open track (seteado en gradle kts)
-        run: gradle bundleRelease publishBundle
+        
+      - name: Commit incrementVersion changes 
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "Add changes"
+          
+      - name: Push incrementVersion changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ github.ref }}
+        
+     # - name: Distribute app # publicar app en el open track (seteado en gradle kts)
+     #   run: gradle bundleRelease publishBundle
+      
+        
